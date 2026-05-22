@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Matsu Knowledge OS</title>
+
+<style>
+
+body{
+font-family:-apple-system,BlinkMacSystemFont,sans-serif;
+margin:0;
+background:#0f1115;
+color:white;
+}
+
+header{
+padding:20px;
+font-size:28px;
+font-weight:700;
+background:#151922;
+position:sticky;
+top:0;
+}
+
+.container{
+padding:20px;
+display:grid;
+gap:16px;
+}
+
+.card{
+background:#1a1f2b;
+padding:18px;
+border-radius:16px;
+cursor:pointer;
+transition:.2s;
+}
+
+.card:hover{
+transform:translateY(-2px);
+background:#222838;
+}
+
+.top{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:10px;
+}
+
+.badge{
+padding:4px 10px;
+border-radius:999px;
+font-size:12px;
+font-weight:700;
+}
+
+.high{background:#ff4d4f;}
+.mid{background:#faad14;}
+.low{background:#52c41a;}
+
+.summary{
+opacity:.8;
+font-size:14px;
+line-height:1.5;
+}
+
+button{
+border:none;
+padding:10px 14px;
+border-radius:10px;
+background:#2962ff;
+color:white;
+font-weight:700;
+cursor:pointer;
+margin-top:10px;
+}
+
+.modal{
+display:none;
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.7);
+justify-content:center;
+align-items:center;
+padding:20px;
+}
+
+.modal-content{
+background:#1a1f2b;
+padding:24px;
+border-radius:18px;
+width:min(600px,100%);
+}
+
+input,textarea,select{
+width:100%;
+margin-top:8px;
+margin-bottom:16px;
+padding:12px;
+border-radius:10px;
+border:none;
+background:#2a3142;
+color:white;
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+Matsu Knowledge OS
+</header>
+
+<div class="container" id="cards"></div>
+
+<div style="padding:20px;">
+<button onclick="openAdd()">＋ 新規追加</button>
+</div>
+
+<div class="modal" id="modal">
+<div class="modal-content">
+
+<h2 id="modalTitle">編集</h2>
+
+<input id="title" placeholder="タイトル">
+
+<select id="importance">
+<option value="high">high</option>
+<option value="mid">mid</option>
+<option value="low">low</option>
+</select>
+
+<input id="url" placeholder="URL">
+
+<textarea id="summary" rows="5" placeholder="要約"></textarea>
+
+<button onclick="save()">保存</button>
+
+</div>
+</div>
+
+<script>
+
+let items = JSON.parse(localStorage.getItem("kb") || "[]")
+
+let editingIndex = null
+
+function render(){
+
+const cards = document.getElementById("cards")
+
+cards.innerHTML = ""
+
+items.forEach((item,index)=>{
+
+cards.innerHTML += `
+
+<div class="card" onclick="edit(${index})">
+
+<div class="top">
+<div>${item.title}</div>
+<div class="badge ${item.importance}">
+${item.importance}
+</div>
+</div>
+
+<div class="summary">
+${item.summary}
+</div>
+
+</div>
+
+`
+
+})
+
+localStorage.setItem("kb",JSON.stringify(items))
+
+}
+
+function openAdd(){
+
+editingIndex = null
+
+document.getElementById("modal").style.display="flex"
+
+document.getElementById("title").value=""
+document.getElementById("importance").value="mid"
+document.getElementById("url").value=""
+document.getElementById("summary").value=""
+
+}
+
+function edit(index){
+
+editingIndex=index
+
+const item = items[index]
+
+document.getElementById("modal").style.display="flex"
+
+document.getElementById("title").value=item.title
+document.getElementById("importance").value=item.importance
+document.getElementById("url").value=item.url
+document.getElementById("summary").value=item.summary
+
+}
+
+function save(){
+
+const item = {
+
+title:document.getElementById("title").value,
+importance:document.getElementById("importance").value,
+url:document.getElementById("url").value,
+summary:document.getElementById("summary").value
+
+}
+
+if(editingIndex===null){
+
+items.unshift(item)
+
+}else{
+
+items[editingIndex]=item
+
+}
+
+document.getElementById("modal").style.display="none"
+
+render()
+
+}
+
+render()
+
+</script>
+
+</body>
+</html>
