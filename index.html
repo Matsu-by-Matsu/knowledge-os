@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="UTF-8" />
+<meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
 <title>Matsu AI OS</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
 
@@ -18,43 +18,57 @@ box-sizing:border-box;
 
 body{
 font-family:'Inter',sans-serif;
-background:#0b1020;
+background:
+radial-gradient(circle at top left,#1b2a52 0%,transparent 30%),
+radial-gradient(circle at bottom right,#0e7490 0%,transparent 25%),
+#050816;
 color:white;
-display:flex;
 height:100vh;
 overflow:hidden;
+display:flex;
 }
 
 .sidebar{
-width:280px;
-background:#11182d;
-padding:24px;
+width:300px;
+background:rgba(255,255,255,.05);
+backdrop-filter:blur(24px);
 border-right:1px solid rgba(255,255,255,.08);
-overflow:auto;
+padding:28px;
+display:flex;
+flex-direction:column;
+gap:24px;
 }
 
 .logo{
-font-size:28px;
-font-weight:700;
-margin-bottom:32px;
+font-size:32px;
+font-weight:800;
+letter-spacing:-1px;
 }
 
-.menu{
+.subtitle{
+opacity:.6;
+font-size:13px;
+margin-top:-14px;
+}
+
+.nav{
 display:flex;
 flex-direction:column;
-gap:12px;
+gap:10px;
 }
 
-.menu-item{
-padding:14px 16px;
-border-radius:14px;
+.nav-item{
+padding:16px 18px;
+border-radius:18px;
+background:rgba(255,255,255,.03);
 cursor:pointer;
-transition:.2s;
-background:transparent;
+transition:.25s;
+font-weight:600;
 }
 
-.menu-item:hover{
-background:#1b2542;
+.nav-item:hover{
+background:rgba(79,124,255,.18);
+transform:translateX(4px);
 }
 
 .main{
@@ -67,66 +81,123 @@ overflow:auto;
 display:flex;
 justify-content:space-between;
 align-items:center;
-margin-bottom:28px;
-gap:16px;
+margin-bottom:32px;
+gap:18px;
 }
 
 .search{
 flex:1;
+position:relative;
 }
 
 .search input{
 width:100%;
-padding:16px;
+padding:18px 22px;
 border:none;
-border-radius:16px;
-background:#151d35;
+border-radius:22px;
+background:rgba(255,255,255,.06);
+backdrop-filter:blur(12px);
 color:white;
 font-size:15px;
+outline:none;
+}
+
+.search input::placeholder{
+color:rgba(255,255,255,.4);
 }
 
 .add-btn{
-padding:14px 18px;
+padding:16px 22px;
 border:none;
-border-radius:14px;
-background:#4f7cff;
+border-radius:20px;
+background:linear-gradient(135deg,#4f7cff,#7c4dff);
 color:white;
 font-weight:700;
 cursor:pointer;
+font-size:15px;
+box-shadow:0 10px 30px rgba(79,124,255,.3);
+transition:.25s;
+}
+
+.add-btn:hover{
+transform:translateY(-2px) scale(1.02);
+}
+
+.stats{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:18px;
+margin-bottom:28px;
+}
+
+.stat{
+padding:24px;
+border-radius:24px;
+background:rgba(255,255,255,.05);
+backdrop-filter:blur(20px);
+border:1px solid rgba(255,255,255,.08);
+}
+
+.stat-title{
+opacity:.6;
+font-size:13px;
+margin-bottom:10px;
+}
+
+.stat-value{
+font-size:34px;
+font-weight:800;
 }
 
 .grid{
 display:grid;
-grid-template-columns:repeat(auto-fill,minmax(320px,1fr));
-gap:20px;
+grid-template-columns:repeat(auto-fill,minmax(340px,1fr));
+gap:22px;
 }
 
 .card{
-background:linear-gradient(180deg,#151d35,#101726);
-padding:22px;
-border-radius:22px;
+padding:24px;
+border-radius:28px;
+background:rgba(255,255,255,.05);
+border:1px solid rgba(255,255,255,.08);
+backdrop-filter:blur(18px);
+transition:.3s;
 cursor:pointer;
-transition:.25s;
-border:1px solid rgba(255,255,255,.06);
+position:relative;
+overflow:hidden;
+}
+
+.card:before{
+content:"";
+position:absolute;
+inset:0;
+background:linear-gradient(135deg,rgba(79,124,255,.12),transparent);
+opacity:0;
+transition:.3s;
+}
+
+.card:hover:before{
+opacity:1;
 }
 
 .card:hover{
-transform:translateY(-4px);
-border-color:#4f7cff;
+transform:translateY(-6px);
+border-color:rgba(79,124,255,.4);
+box-shadow:0 20px 40px rgba(0,0,0,.35);
 }
 
 .card-top{
 display:flex;
 justify-content:space-between;
 align-items:center;
-margin-bottom:14px;
+margin-bottom:18px;
 }
 
 .badge{
-padding:6px 10px;
+padding:7px 12px;
 border-radius:999px;
 font-size:12px;
-font-weight:700;
+font-weight:800;
 }
 
 .high{
@@ -138,33 +209,33 @@ background:#faad14;
 }
 
 .low{
-background:#52c41a;
+background:#22c55e;
 }
 
 .card-title{
-font-size:20px;
+font-size:22px;
 font-weight:700;
-margin-bottom:12px;
 line-height:1.4;
+margin-bottom:14px;
 }
 
 .card-summary{
-opacity:.75;
-line-height:1.7;
+opacity:.72;
+line-height:1.8;
 font-size:14px;
-margin-bottom:16px;
+margin-bottom:18px;
 }
 
 .tags{
 display:flex;
 flex-wrap:wrap;
-gap:8px;
+gap:10px;
 }
 
 .tag{
-background:#1f2b4d;
-padding:6px 10px;
+padding:8px 12px;
 border-radius:999px;
+background:rgba(79,124,255,.14);
 font-size:12px;
 }
 
@@ -172,7 +243,8 @@ font-size:12px;
 display:none;
 position:fixed;
 inset:0;
-background:rgba(0,0,0,.7);
+background:rgba(0,0,0,.65);
+backdrop-filter:blur(12px);
 justify-content:center;
 align-items:center;
 padding:20px;
@@ -180,38 +252,43 @@ z-index:100;
 }
 
 .modal-content{
-background:#11182d;
-padding:28px;
-border-radius:24px;
-width:min(700px,100%);
+width:min(760px,100%);
+padding:34px;
+border-radius:34px;
+background:#0f172a;
+border:1px solid rgba(255,255,255,.08);
 }
 
 .modal-content h2{
-margin-bottom:20px;
+font-size:30px;
+margin-bottom:24px;
 }
 
 input,textarea,select{
 width:100%;
-padding:14px;
-margin-bottom:16px;
+padding:18px;
 border:none;
-border-radius:14px;
-background:#1a2442;
+border-radius:18px;
+background:rgba(255,255,255,.06);
 color:white;
+margin-bottom:18px;
+font-size:15px;
+outline:none;
 }
 
 textarea{
-min-height:120px;
+min-height:140px;
 resize:vertical;
 }
 
 .save-btn{
 width:100%;
-padding:16px;
+padding:18px;
 border:none;
-border-radius:14px;
-background:#4f7cff;
+border-radius:20px;
+background:linear-gradient(135deg,#4f7cff,#7c4dff);
 color:white;
+font-size:16px;
 font-weight:700;
 cursor:pointer;
 }
@@ -220,22 +297,17 @@ cursor:pointer;
 
 body{
 flex-direction:column;
+overflow:auto;
 }
 
 .sidebar{
 width:100%;
-height:auto;
-display:flex;
-overflow:auto;
-gap:12px;
+border-right:none;
+border-bottom:1px solid rgba(255,255,255,.08);
 }
 
-.menu{
-flex-direction:row;
-}
-
-.main{
-padding:18px;
+.stats{
+grid-template-columns:1fr;
 }
 
 .grid{
@@ -251,18 +323,22 @@ grid-template-columns:1fr;
 
 <div class="sidebar">
 
+<div>
 <div class="logo">
 Matsu AI OS
 </div>
 
-<div class="menu">
+<div class="subtitle">
+Personal Knowledge Intelligence System
+</div>
+</div>
 
-<div class="menu-item">🏢 不動産</div>
-<div class="menu-item">🤖 AI</div>
-<div class="menu-item">💰 投資</div>
-<div class="menu-item">🧠 思考</div>
-<div class="menu-item">🚗 ライフ</div>
-
+<div class="nav">
+<div class="nav-item">🏢 Real Estate</div>
+<div class="nav-item">🤖 AI Business</div>
+<div class="nav-item">📈 Investment</div>
+<div class="nav-item">🧠 Thinking</div>
+<div class="nav-item">🚗 Lifestyle</div>
 </div>
 
 </div>
@@ -272,12 +348,31 @@ Matsu AI OS
 <div class="topbar">
 
 <div class="search">
-<input id="searchInput" placeholder="Search Knowledge...">
+<input id="searchInput" placeholder="Search thoughts, projects, knowledge...">
 </div>
 
 <button class="add-btn" onclick="openModal()">
-＋ 新規追加
+＋ Add Knowledge
 </button>
+
+</div>
+
+<div class="stats">
+
+<div class="stat">
+<div class="stat-title">Knowledge Nodes</div>
+<div class="stat-value" id="countStat">0</div>
+</div>
+
+<div class="stat">
+<div class="stat-title">High Importance</div>
+<div class="stat-value" id="highStat">0</div>
+</div>
+
+<div class="stat">
+<div class="stat-title">Categories</div>
+<div class="stat-value">5</div>
+</div>
 
 </div>
 
@@ -289,9 +384,9 @@ Matsu AI OS
 
 <div class="modal-content">
 
-<h2>Knowledge追加</h2>
+<h2>Create Knowledge</h2>
 
-<input id="title" placeholder="タイトル">
+<input id="title" placeholder="Title">
 
 <select id="importance">
 <option value="high">high</option>
@@ -299,14 +394,14 @@ Matsu AI OS
 <option value="low">low</option>
 </select>
 
-<input id="tags" placeholder="タグ（カンマ区切り）">
+<input id="tags" placeholder="Tags (comma separated)">
 
 <input id="url" placeholder="URL">
 
-<textarea id="summary" placeholder="要約"></textarea>
+<textarea id="summary" placeholder="Summary"></textarea>
 
 <button class="save-btn" onclick="saveKnowledge()">
-保存
+Save Knowledge
 </button>
 
 </div>
@@ -317,13 +412,22 @@ Matsu AI OS
 
 let knowledge = JSON.parse(localStorage.getItem("knowledge") || "[]")
 
+function updateStats(){
+
+document.getElementById("countStat").innerText=knowledge.length
+
+document.getElementById("highStat").innerText=
+knowledge.filter(k=>k.importance==="high").length
+
+}
+
 function render(data=knowledge){
 
-const grid = document.getElementById("grid")
+const grid=document.getElementById("grid")
 
 grid.innerHTML=""
 
-data.forEach((item,index)=>{
+data.forEach(item=>{
 
 grid.innerHTML += `
 
@@ -361,6 +465,8 @@ ${item.tags.map(tag=>`
 
 localStorage.setItem("knowledge",JSON.stringify(knowledge))
 
+updateStats()
+
 }
 
 function openModal(){
@@ -391,9 +497,9 @@ document.getElementById("modal").style.display="none"
 
 document.getElementById("searchInput").addEventListener("input",(e)=>{
 
-const q = e.target.value.toLowerCase()
+const q=e.target.value.toLowerCase()
 
-const filtered = knowledge.filter(item=>
+const filtered=knowledge.filter(item=>
 
 item.title.toLowerCase().includes(q) ||
 item.summary.toLowerCase().includes(q)
