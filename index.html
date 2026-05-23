@@ -3,366 +3,243 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Matsu AI OS</title>
+<title>Matsu Knowledge OS</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+--bg:#050816;--panel:rgba(255,255,255,.07);--panel2:rgba(255,255,255,.11);
+--line:rgba(255,255,255,.12);--text:#f8fafc;--muted:#94a3b8;
+--blue:#5b7cfa;--purple:#8b5cf6;--cyan:#22d3ee;--red:#fb7185;--yellow:#f59e0b;--green:#22c55e;
+}
 body{
-font-family:-apple-system,BlinkMacSystemFont,sans-serif;
+font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
 background:
-radial-gradient(circle at top left,#1e3a8a33 0%,transparent 30%),
-radial-gradient(circle at bottom right,#06b6d433 0%,transparent 30%),
-#050816;
-color:#fff;
-min-height:100vh;
-display:grid;
-grid-template-columns:280px 1fr;
+radial-gradient(circle at 10% 0%,rgba(91,124,250,.34),transparent 30%),
+radial-gradient(circle at 95% 20%,rgba(34,211,238,.22),transparent 28%),
+radial-gradient(circle at 65% 100%,rgba(139,92,246,.20),transparent 35%),
+var(--bg);
+color:var(--text);min-height:100vh;
 }
-.sidebar{
-background:rgba(255,255,255,.05);
-backdrop-filter:blur(20px);
-border-right:1px solid rgba(255,255,255,.08);
-padding:24px;
-}
-.logo{
-font-size:30px;
-font-weight:900;
-margin-bottom:8px;
-}
-.sub{
-font-size:12px;
-opacity:.6;
-margin-bottom:28px;
-}
-.nav{
-display:flex;
-flex-direction:column;
-gap:10px;
-}
-.nav div{
-padding:14px 16px;
-border-radius:16px;
-background:rgba(255,255,255,.04);
-cursor:pointer;
-transition:.2s;
-font-weight:700;
-}
-.nav div:hover{
-background:rgba(91,124,250,.2);
-transform:translateX(3px);
-}
-.main{
-padding:28px;
-}
-.top{
-display:flex;
-gap:14px;
-margin-bottom:24px;
-}
-.search{
-flex:1;
-}
-.search input{
-width:100%;
-padding:16px;
-border:none;
-border-radius:18px;
-background:rgba(255,255,255,.07);
-color:white;
-}
-button{
-border:none;
-padding:16px 20px;
-border-radius:18px;
-background:linear-gradient(135deg,#5b7cfa,#7c3aed);
-color:white;
-font-weight:800;
-cursor:pointer;
-}
-.stats{
-display:grid;
-grid-template-columns:repeat(3,1fr);
-gap:14px;
-margin-bottom:22px;
-}
-.stat{
-padding:20px;
-border-radius:22px;
-background:rgba(255,255,255,.05);
-border:1px solid rgba(255,255,255,.08);
-}
-.stat b{
-font-size:34px;
-}
-.grid{
-display:grid;
-grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
-gap:18px;
-}
-.card{
-padding:22px;
-border-radius:24px;
-background:rgba(255,255,255,.05);
-border:1px solid rgba(255,255,255,.08);
-backdrop-filter:blur(18px);
-transition:.25s;
-}
-.card:hover{
-transform:translateY(-4px);
-border-color:#5b7cfa;
-}
-.badge{
-display:inline-block;
-padding:6px 10px;
-border-radius:999px;
-font-size:12px;
-font-weight:800;
-margin-bottom:14px;
-}
-.high{background:#ef444433;color:#fecaca}
-.mid{background:#f59e0b33;color:#fde68a}
-.low{background:#22c55e33;color:#bbf7d0}
-.title{
-font-size:22px;
-font-weight:800;
-margin-bottom:10px;
-line-height:1.4;
-}
-.summary{
-opacity:.75;
-line-height:1.7;
-font-size:14px;
-margin-bottom:14px;
-}
-.tags{
-display:flex;
-flex-wrap:wrap;
-gap:8px;
-}
-.tag{
-background:#1e3a8a55;
-padding:6px 10px;
-border-radius:999px;
-font-size:12px;
-}
-.modal{
-display:none;
-position:fixed;
-inset:0;
-background:rgba(0,0,0,.7);
-align-items:center;
-justify-content:center;
-padding:20px;
-}
-.modal-content{
-width:min(700px,100%);
-background:#0f172a;
-padding:28px;
-border-radius:28px;
-}
-.modal-content input,
-.modal-content textarea,
-.modal-content select{
-width:100%;
-padding:14px;
-border:none;
-border-radius:14px;
-background:rgba(255,255,255,.07);
-color:white;
-margin-bottom:14px;
-}
-.modal-content textarea{
-min-height:120px;
-}
-@media(max-width:900px){
-body{grid-template-columns:1fr}
-.sidebar{border-right:none;border-bottom:1px solid rgba(255,255,255,.08)}
-.stats{grid-template-columns:1fr}
+.app{display:grid;grid-template-columns:280px 1fr 360px;min-height:100vh}
+.side{padding:22px;border-right:1px solid var(--line);background:rgba(5,8,18,.55);backdrop-filter:blur(22px);height:100vh;position:sticky;top:0;overflow:auto}
+.logo{font-size:27px;font-weight:900;letter-spacing:-.04em}
+.sub{font-size:12px;color:var(--muted);margin:4px 0 22px;line-height:1.5}
+.nav{display:grid;gap:8px}
+.nav button{text-align:left;border:1px solid transparent;background:transparent;color:var(--text);padding:12px;border-radius:14px;font-weight:800;cursor:pointer}
+.nav button.active,.nav button:hover{background:var(--panel);border-color:var(--line)}
+.sideActions{display:grid;gap:9px;margin-top:16px}
+.btn{border:1px solid var(--line);border-radius:14px;padding:12px 14px;background:var(--panel);color:white;font-weight:900;cursor:pointer}
+.primary{border:0;background:linear-gradient(135deg,var(--blue),var(--purple));box-shadow:0 14px 34px rgba(91,124,250,.22)}
+.main{padding:28px;overflow:auto}
+.top{display:flex;gap:12px;align-items:center;margin-bottom:16px}
+.search{flex:1}
+input,select,textarea{width:100%;border:1px solid var(--line);background:rgba(255,255,255,.075);color:var(--text);border-radius:14px;padding:13px 14px;outline:none}
+textarea{min-height:120px;resize:vertical}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:16px 0 22px}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:16px}
+.stat b{font-size:28px}
+.stat span{display:block;color:var(--muted);font-size:12px;margin-top:3px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(285px,1fr));gap:14px}
+.card{position:relative;min-height:220px;background:linear-gradient(180deg,rgba(255,255,255,.09),rgba(255,255,255,.045));border:1px solid var(--line);border-radius:22px;padding:18px;cursor:pointer;transition:.2s;overflow:hidden}
+.card:hover{transform:translateY(-3px);border-color:rgba(91,124,250,.55);box-shadow:0 18px 46px rgba(0,0,0,.28)}
+.card h3{margin:12px 0 9px;font-size:18px;line-height:1.35;letter-spacing:-.02em}
+.meta{color:var(--muted);font-size:12px;display:flex;gap:8px;flex-wrap:wrap}
+.summary{color:#cbd5e1;font-size:13px;line-height:1.65;margin:12px 0 44px}
+.tags{display:flex;gap:6px;flex-wrap:wrap;position:absolute;bottom:16px;left:18px;right:18px}
+.tag{font-size:11px;color:#dbeafe;background:rgba(91,124,250,.18);border:1px solid rgba(91,124,250,.22);padding:5px 8px;border-radius:999px}
+.badge{display:inline-block;font-size:11px;font-weight:900;padding:5px 9px;border-radius:999px}
+.high{background:rgba(251,113,133,.20);color:#fecdd3}
+.mid{background:rgba(245,158,11,.20);color:#fde68a}
+.low{background:rgba(34,197,94,.20);color:#bbf7d0}
+.detail{padding:22px;border-left:1px solid var(--line);background:rgba(5,8,18,.48);backdrop-filter:blur(22px);height:100vh;position:sticky;top:0;overflow:auto}
+.detail h2{font-size:23px;line-height:1.25;margin:10px 0}
+.box{border:1px solid var(--line);border-radius:18px;background:var(--panel);padding:14px;margin:12px 0}
+.small{font-size:12px;color:var(--muted);line-height:1.6}
+.actions{display:grid;gap:9px;margin-top:14px}
+.danger{background:rgba(251,113,133,.14)!important}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.70);display:none;align-items:center;justify-content:center;padding:20px;z-index:20;backdrop-filter:blur(10px)}
+.modal.on{display:flex}
+.modalin{width:min(780px,100%);max-height:92vh;overflow:auto;background:#0f172a;border:1px solid var(--line);border-radius:24px;padding:22px}
+.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.field{display:grid;gap:6px;margin-bottom:12px}
+label{font-size:12px;color:var(--muted);font-weight:900}
+.importArea{font-family:ui-monospace,Menlo,monospace;min-height:260px}
+a{color:#93c5fd}
+@media(max-width:1100px){
+.app{grid-template-columns:1fr}
+.side,.detail{position:relative;height:auto;border:0}
+.side{border-bottom:1px solid var(--line)}
+.nav{grid-template-columns:repeat(2,1fr)}
+.stats{grid-template-columns:repeat(2,1fr)}
+.top{flex-direction:column}
 .grid{grid-template-columns:1fr}
+.detail{display:none}
+.formgrid{grid-template-columns:1fr}
 }
 </style>
 </head>
 <body>
-
-<div class="sidebar">
-<div class="logo">Matsu AI OS</div>
-<div class="sub">Personal Knowledge Intelligence System</div>
-
-<div class="nav">
-<div>🏢 Real Estate</div>
-<div>🤖 AI Business</div>
-<div>📈 Investment</div>
-<div>🧠 Thinking</div>
-<div>🚗 Lifestyle</div>
+<div class="app">
+<aside class="side">
+<div class="logo">Matsu Knowledge OS</div>
+<div class="sub">ChatGPT履歴入り。Claude / NotebookLM JSONも取り込み可能。</div>
+<div class="nav" id="nav"></div>
+<div class="sideActions">
+<button class="btn primary" onclick="openEditor()">＋ Add</button>
+<button class="btn" onclick="openImport()">JSON取込</button>
+<button class="btn" onclick="exportJson()">JSON Export</button>
+<button class="btn danger" onclick="resetSeed()">初期データ復元</button>
 </div>
-</div>
+</aside>
 
-<div class="main">
-
+<main class="main">
 <div class="top">
-<div class="search">
-<input id="search" placeholder="Search knowledge...">
+<div class="search"><input id="q" placeholder="検索：Omotesando / Synth X / PowerShell / 英語 / 車..."></div>
+<button class="btn primary" onclick="openEditor()">新規追加</button>
 </div>
-
-<button onclick="openModal()">＋ Add</button>
-</div>
-
-<div class="stats">
-<div class="stat">
-<div>Total Nodes</div>
-<b id="totalCount">0</b>
-</div>
-
-<div class="stat">
-<div>High Importance</div>
-<b id="highCount">0</b>
-</div>
-
-<div class="stat">
-<div>Categories</div>
-<b>5</b>
-</div>
-</div>
-
+<section class="stats">
+<div class="stat"><b id="sAll">0</b><span>全ノード</span></div>
+<div class="stat"><b id="sHigh">0</b><span>重要度 high</span></div>
+<div class="stat"><b id="sCat">0</b><span>カテゴリ</span></div>
+<div class="stat"><b id="sSrc">0</b><span>ソース</span></div>
+</section>
 <div class="grid" id="grid"></div>
+</main>
+
+<aside class="detail" id="detail">
+<div class="small">Selected Node</div>
+<h2>カードを選択</h2>
+<div class="box small">カードを押すと、要約・タグ・URL・編集・削除がここに出る。</div>
+</aside>
 </div>
 
 <div class="modal" id="modal">
-<div class="modal-content">
+<div class="modalin">
+<h2 id="modalTitle">Edit</h2>
+<div class="formgrid">
+<div class="field"><label>Title</label><input id="fTitle"></div>
+<div class="field"><label>Importance</label><select id="fImportance"><option>high</option><option>mid</option><option>low</option></select></div>
+<div class="field"><label>Category</label><input id="fCategory"></div>
+<div class="field"><label>Subcategory</label><input id="fSubcategory"></div>
+<div class="field"><label>Date</label><input id="fDate"></div>
+<div class="field"><label>Source</label><select id="fSource"><option>chatgpt</option><option>claude</option><option>notebooklm</option><option>manual</option></select></div>
+</div>
+<div class="field"><label>URL</label><input id="fUrl"></div>
+<div class="field"><label>Tags（カンマ区切り）</label><input id="fTags"></div>
+<div class="field"><label>Summary</label><textarea id="fSummary"></textarea></div>
+<div class="actions" style="grid-template-columns:1fr 1fr">
+<button class="btn" onclick="closeModal()">Cancel</button>
+<button class="btn primary" onclick="saveItem()">Save</button>
+</div>
+</div>
+</div>
 
-<h2 style="margin-bottom:18px">Add Knowledge</h2>
-
-<input id="title" placeholder="Title">
-
-<select id="importance">
-<option value="high">high</option>
-<option value="mid">mid</option>
-<option value="low">low</option>
-</select>
-
-<input id="tags" placeholder="Tags (comma separated)">
-
-<input id="url" placeholder="URL">
-
-<textarea id="summary" placeholder="Summary"></textarea>
-
-<button onclick="saveKnowledge()">Save</button>
-
+<div class="modal" id="importModal">
+<div class="modalin">
+<h2>JSON取込</h2>
+<p class="small">ChatGPT / Claude / NotebookLM で出したJSON配列を貼る。既存データに追加される。</p>
+<textarea id="importText" class="importArea" placeholder='[{"title":"...","url":"","category":"...","subcategory":"...","importance":"high","summary":"...","date":"2026/05/23","source":"chatgpt","tags":["..."]}]'></textarea>
+<div class="actions" style="grid-template-columns:1fr 1fr">
+<button class="btn" onclick="closeImport()">Cancel</button>
+<button class="btn primary" onclick="doImport()">Import</button>
+</div>
 </div>
 </div>
 
 <script>
+const SEED = [{"title": "GitHubアクセスエラー対処法", "url": "", "category": "テクノロジー学習", "subcategory": "GitHub/ネットワーク", "importance": "mid", "summary": "GitHubに入れない問題の切り分け。Google検索は可能でネット自体は動いている前提。", "date": "2026/05/23", "source": "chatgpt", "tags": ["GitHub", "ネットワーク", "トラブル"]}, {"title": "待機時間予測", "url": "", "category": "ライフスタイル", "subcategory": "外出/待ち時間", "importance": "low", "summary": "順番待ちの残り時間と、グレー空席を作っている理由を推測。", "date": "2026/05/23", "source": "chatgpt", "tags": ["外出", "待ち時間"]}, {"title": "会話まとめJSON出力", "url": "", "category": "テクノロジー学習", "subcategory": "Knowledge OS", "importance": "high", "summary": "今月のChatGPT会話をJSON配列で整理するためのフォーマットを指定。", "date": "2026/05/22", "source": "chatgpt", "tags": ["JSON", "会話整理", "Knowledge OS"]}, {"title": "PJ名提案と選定", "url": "", "category": "不動産ビジネス", "subcategory": "英語メール/IC対応", "importance": "high", "summary": "Steve向けメール、件名、写真共有、ICメモ事前レビューへの返信英文を調整。", "date": "2026/04/30", "source": "chatgpt", "tags": ["英語", "IC", "Steve", "メール"]}, {"title": "Proforma英訳提案", "url": "", "category": "不動産ビジネス", "subcategory": "英訳/投資メモ", "importance": "high", "summary": "PJ Apex関連のメモ送付、Portfolio Analysis依頼、FIC予定などを英語化。", "date": "2026/05/14", "source": "chatgpt", "tags": ["Apex", "FIC", "英訳"]}, {"title": "探偵になる方法", "url": "", "category": "ライフスタイル", "subcategory": "雑談/キャリア", "importance": "low", "summary": "コナンに憧れた文脈で、探偵になる現実的な方法を整理。", "date": "2026/05/21", "source": "chatgpt", "tags": ["探偵", "雑談"]}, {"title": "東京オフィス市場分析", "url": "", "category": "不動産ビジネス", "subcategory": "市場レポート翻訳", "importance": "high", "summary": "PJ Apex R&SドラフトPDFの全文日本語訳と要約を依頼。", "date": "2026/05/20", "source": "chatgpt", "tags": ["東京オフィス", "翻訳", "R&S"]}, {"title": "STO分配金の違和感", "url": "", "category": "不動産ビジネス", "subcategory": "STO/利回り", "importance": "mid", "summary": "STO商品の分配金差異、1766の安定性、巡航3.5%の妥当性を検討。", "date": "2026/05/20", "source": "chatgpt", "tags": ["STO", "分配金", "利回り"]}, {"title": "PC電源設定と休止状態", "url": "", "category": "テクノロジー学習", "subcategory": "Windows/Surface", "importance": "mid", "summary": "スリープ・休止状態・電源ボタン・カバー動作の最適設定を確認。", "date": "2025/08/13", "source": "chatgpt", "tags": ["Windows", "Surface", "休止状態"]}, {"title": "PMサービス評価", "url": "", "category": "不動産ビジネス", "subcategory": "PM評価", "importance": "high", "summary": "帝国不動産PMサービスの体制、KPI、原状回復、平均空室日数を評価。", "date": "2026/05/20", "source": "chatgpt", "tags": ["PM", "管理会社", "KPI"]}, {"title": "英語トランスクリプト解説", "url": "", "category": "テクノロジー学習", "subcategory": "英語学習/松嶋式", "importance": "mid", "summary": "英語トランスクリプト教材を松嶋式で逐語解説し、続き運用を実施。", "date": "2025/10/09", "source": "chatgpt", "tags": ["英語", "松嶋式", "トランスクリプト"]}, {"title": "YouTube英語字幕取得", "url": "", "category": "テクノロジー学習", "subcategory": "YouTube/字幕", "importance": "mid", "summary": "YouTube字幕取得がブロックされた場合の代替コピー方法を確認。", "date": "2026/05/19", "source": "chatgpt", "tags": ["YouTube", "字幕", "英語"]}, {"title": "Excelデータラベル追加", "url": "", "category": "テクノロジー学習", "subcategory": "Excel/グラフ", "importance": "low", "summary": "Excelグラフにデータラベルを追加する方法を確認。", "date": "2026/05/19", "source": "chatgpt", "tags": ["Excel", "グラフ"]}, {"title": "日本市場の韻", "url": "", "category": "不動産ビジネス", "subcategory": "市場コメント", "importance": "mid", "summary": "Japan Weekly Takeの内容を読み、簡潔な評価と要約を作成。", "date": "2026/05/19", "source": "chatgpt", "tags": ["日本市場", "メール", "要約"]}, {"title": "ビッグデータAI分析", "url": "", "category": "新規ビジネス探索", "subcategory": "AIデータ事業", "importance": "high", "summary": "株式・不動産・心理・広告等のデータ取得先、AI投入、分析、収益化を表化。", "date": "2026/05/14", "source": "chatgpt", "tags": ["ビッグデータ", "AI分析", "収益化"]}, {"title": "週報ファイル解析", "url": "", "category": "不動産ビジネス", "subcategory": "週報/数値分析", "importance": "high", "summary": "フロンティアレジデンスザタワー品川の週報を要約し数値分析。", "date": "2026/05/18", "source": "chatgpt", "tags": ["週報", "品川", "分析"]}, {"title": "性格分析とSynth X", "url": "", "category": "新規ビジネス探索", "subcategory": "Synth X/ブランディング", "importance": "high", "summary": "性格分析、パーソナルカラー、Synth Xのロゴ・カラー方針を検討。", "date": "2026/05/17", "source": "chatgpt", "tags": ["Synth X", "ロゴ", "ブランディング"]}, {"title": "IPI会社名提案", "url": "", "category": "新規ビジネス探索", "subcategory": "不動産ファンド新会社", "importance": "high", "summary": "Island Peak Investmentの会社名、ロゴ、役職、日本語英語併記を検討。", "date": "2026/05/17", "source": "chatgpt", "tags": ["IPI", "新会社", "ロゴ"]}, {"title": "Shimauma Capital構想", "url": "", "category": "新規ビジネス探索", "subcategory": "ファンド名/相棒性", "importance": "high", "summary": "島ちゃんとの相棒性を表す会社名・ロゴ・役職案を検討。", "date": "2026/05/17", "source": "chatgpt", "tags": ["Shimauma", "会社名", "ファンド"]}, {"title": "不動産権利形態まとめ", "url": "", "category": "不動産ビジネス", "subcategory": "権利形態/区分所有", "importance": "high", "summary": "敷地権、土地共有、建物共有、REIT事例を縦表形式で整理。", "date": "2026/05/15", "source": "chatgpt", "tags": ["敷地権", "共有", "区分所有"]}, {"title": "モニター文字サイズ", "url": "", "category": "テクノロジー学習", "subcategory": "Windows/Outlook表示", "importance": "mid", "summary": "外部モニター接続時にOutlookなどの文字を小さくする方法を確認。", "date": "2026/05/15", "source": "chatgpt", "tags": ["Outlook", "モニター", "表示"]}, {"title": "ポッドキャスト収益化", "url": "", "category": "X・noteコンテンツ事業", "subcategory": "街/建築歴史", "importance": "high", "summary": "駅・街・建築歴史の雑学ポッドキャストについて収益化手順とネタ出し。", "date": "2026/05/14", "source": "chatgpt", "tags": ["ポッドキャスト", "街", "収益化"]}, {"title": "CSV一括DLとKDDI分析", "url": "", "category": "テクノロジー学習", "subcategory": "データ処理/PowerShell", "importance": "high", "summary": "KDDI Location AnalyzerのCSVやPDFを使ったデータ処理とAI分析を検討。", "date": "2026/05/13", "source": "chatgpt", "tags": ["CSV", "KDDI", "PowerShell"]}, {"title": "CAGR英語表現", "url": "", "category": "不動産ビジネス", "subcategory": "英語表現", "importance": "mid", "summary": "CAGR適用後、調整中、内覧、行程表などの英語表現を作成。", "date": "2026/05/06", "source": "chatgpt", "tags": ["英語", "CAGR", "内覧"]}, {"title": "サービス分類の整理", "url": "", "category": "新規ビジネス探索", "subcategory": "サービス設計", "importance": "mid", "summary": "サービス分類を修正し、かっこいい1枚紙にする方向を検討。", "date": "2026/05/14", "source": "chatgpt", "tags": ["サービス分類", "資料"]}, {"title": "ヘルスケア施設補助金", "url": "", "category": "不動産ビジネス", "subcategory": "ヘルスケア/補助金", "importance": "mid", "summary": "ヘルスケア施設建築時に取得可能な補助金の出どころを確認。", "date": "2026/05/14", "source": "chatgpt", "tags": ["ヘルスケア", "補助金"]}, {"title": "筋肉痛と毎日トレ", "url": "", "category": "ライフスタイル", "subcategory": "フィットネス/MMA", "importance": "mid", "summary": "下半身筋肉痛を踏まえ、職場階段でできる10分自重トレを設計。", "date": "2026/05/14", "source": "chatgpt", "tags": ["筋トレ", "MMA", "階段"]}, {"title": "AIによる仕事の変化", "url": "", "category": "新規ビジネス探索", "subcategory": "Synth X/一人ユニコーン", "importance": "high", "summary": "AIで仕事コストが激減する構造、会社名、Synth X案を検討。", "date": "2026/05/13", "source": "chatgpt", "tags": ["AI", "Synth X", "新結合"]}, {"title": "大喜利お題と採点", "url": "", "category": "ライフスタイル", "subcategory": "大喜利/創作", "importance": "low", "summary": "大喜利回答の採点、改善、お題出しを実施。", "date": "2026/05/12", "source": "chatgpt", "tags": ["大喜利", "創作"]}, {"title": "Excelデータ効率化", "url": "", "category": "テクノロジー学習", "subcategory": "Excel/PowerShell", "importance": "high", "summary": "ExcelファイルのCSV化、PowerShellの意味と使い道を整理。", "date": "2026/05/12", "source": "chatgpt", "tags": ["Excel", "CSV", "PowerShell"]}, {"title": "独立契約の提案", "url": "", "category": "新規ビジネス探索", "subcategory": "桜十字/報酬条件", "importance": "high", "summary": "ソーシング・UW・アドバイザリー報酬、取得会議参加案を整理。", "date": "2026/05/11", "source": "chatgpt", "tags": ["独立", "報酬", "桜十字"]}, {"title": "味スタ観戦の並び", "url": "", "category": "ライフスタイル", "subcategory": "サッカー観戦", "importance": "low", "summary": "味スタで並ぶ理由、自由席、練習時間、ホーム側配置を確認。", "date": "2026/05/10", "source": "chatgpt", "tags": ["味スタ", "FC東京", "観戦"]}, {"title": "松嶋式訳", "url": "", "category": "テクノロジー学習", "subcategory": "英語学習/松嶋式", "importance": "mid", "summary": "画像英文を松嶋式で解説し、ain’tの読みも確認。", "date": "2026/05/09", "source": "chatgpt", "tags": ["松嶋式", "英語"]}, {"title": "RIZINファイトマネー", "url": "", "category": "ライフスタイル", "subcategory": "格闘技", "importance": "low", "summary": "RIZIN選手のファイトマネー推測と、試合不成立時の支払いを確認。", "date": "2026/05/08", "source": "chatgpt", "tags": ["RIZIN", "格闘技"]}, {"title": "妊娠確率の計算", "url": "", "category": "ライフスタイル", "subcategory": "健康/妊娠リスク", "importance": "mid", "summary": "生理周期から排卵日を予測し、妊娠可能性とリスク低減行動を整理。", "date": "2026/05/04", "source": "chatgpt", "tags": ["妊娠", "排卵日", "健康"]}, {"title": "車の洗車とヴェラール", "url": "", "category": "ライフスタイル", "subcategory": "車/ヴェラール", "importance": "mid", "summary": "ヴェラールのホース、ワイパー引っかかり、雨シミ、ゼロウォーターを相談。", "date": "2025/12/10", "source": "chatgpt", "tags": ["ヴェラール", "洗車", "車"]}, {"title": "世界の歓楽街調査", "url": "", "category": "ライフスタイル", "subcategory": "旅行/歓楽街", "importance": "low", "summary": "世界の歓楽街、安全性、合法性、価格、チューリッヒやタイ等を比較。", "date": "2026/05/01", "source": "chatgpt", "tags": ["旅行", "歓楽街"]}, {"title": "土地共有と取り壊し同意", "url": "", "category": "不動産ビジネス", "subcategory": "共有/法務", "importance": "high", "summary": "土地共有持分8%と建物完全所有の場合、取り壊しに共有者同意が必要か検討。", "date": "2026/04/30", "source": "chatgpt", "tags": ["共有", "取り壊し", "法務"]}];
+let data = JSON.parse(localStorage.getItem("matsu_knowledge_final_v1") || "null") || SEED;
+let activeCat = "ALL";
+let selected = null;
+let editing = null;
 
-const seed = [
-{
-title:"Knowledge OS構築",
-importance:"high",
-summary:"ChatGPT / Claude / NotebookLM を統合して知識DB化する構想。",
-tags:["AI","Knowledge","OS"],
-url:""
-},
-{
-title:"Synth X ブランド設計",
-importance:"high",
-summary:"新結合をテーマにしたAI会社名・ロゴ・カラー設計。",
-tags:["Synth X","Branding"],
-url:""
-},
-{
-title:"Omotesando Court",
-importance:"high",
-summary:"表参道案件のIRR、定借化、価値向上シナリオ。",
-tags:["Real Estate","IRR"],
-url:""
+function saveLocal(){localStorage.setItem("matsu_knowledge_final_v1",JSON.stringify(data));}
+function esc(s){return String(s||"").replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
+function categories(){return ["ALL",...Array.from(new Set(data.map(x=>x.category||"未分類")))];}
+function icon(c){if(c.includes("不動産"))return"🏢";if(c.includes("新規"))return"🚀";if(c.includes("テクノロジー"))return"💻";if(c.includes("ライフ"))return"🚗";if(c.includes("X"))return"✍️";return"📁";}
+function filtered(){
+const q=document.getElementById("q").value.toLowerCase();
+return data.filter(x=>(activeCat==="ALL"||x.category===activeCat)&&[x.title,x.summary,x.category,x.subcategory,(x.tags||[]).join(" "),x.source,x.date].join(" ").toLowerCase().includes(q));
 }
-]
-
-let knowledge = JSON.parse(localStorage.getItem("knowledge")) || seed
-
-function render(data=knowledge){
-
-const grid=document.getElementById("grid")
-grid.innerHTML=""
-
-document.getElementById("totalCount").innerText=knowledge.length
-document.getElementById("highCount").innerText=
-knowledge.filter(x=>x.importance==="high").length
-
-data.forEach(item=>{
-
-grid.innerHTML += `
-<div class="card" onclick="openLink('${item.url}')">
-
-<div class="badge ${item.importance}">
-${item.importance}
-</div>
-
-<div class="title">
-${item.title}
-</div>
-
-<div class="summary">
-${item.summary}
-</div>
-
-<div class="tags">
-${item.tags.map(tag=>`
-<div class="tag">${tag}</div>
-`).join("")}
-</div>
-
-</div>
-`
-
-})
-
-localStorage.setItem("knowledge",JSON.stringify(knowledge))
-
+function renderNav(){
+const n=document.getElementById("nav");n.innerHTML="";
+categories().forEach(c=>{
+const count=c==="ALL"?data.length:data.filter(x=>x.category===c).length;
+const b=document.createElement("button");
+b.className=c===activeCat?"active":"";
+b.innerHTML=`${c==="ALL"?"🧠":icon(c)} ${esc(c)} <span style="float:right;color:#94a3b8">${count}</span>`;
+b.onclick=()=>{activeCat=c;render();};
+n.appendChild(b);
+});
 }
-
-function openLink(url){
-if(url){
-window.open(url,"_blank")
+function render(){
+renderNav();
+const arr=filtered();
+sAll.textContent=data.length;
+sHigh.textContent=data.filter(x=>x.importance==="high").length;
+sCat.textContent=new Set(data.map(x=>x.category)).size;
+sSrc.textContent=new Set(data.map(x=>x.source)).size;
+grid.innerHTML="";
+arr.forEach(x=>{
+const idx=data.indexOf(x);
+const div=document.createElement("div");
+div.className="card";
+div.onclick=()=>selectItem(idx);
+div.innerHTML=`<div class="meta"><span class="badge ${x.importance}">${esc(x.importance)}</span><span>${esc(x.source||"")}</span><span>${esc(x.date||"")}</span></div>
+<h3>${esc(x.title)}</h3>
+<div class="meta">${esc(x.category||"")} / ${esc(x.subcategory||"")}</div>
+<div class="summary">${esc(x.summary||"")}</div>
+<div class="tags">${(x.tags||[]).slice(0,4).map(t=>`<span class="tag">${esc(t)}</span>`).join("")}</div>`;
+grid.appendChild(div);
+});
+saveLocal();
 }
+function selectItem(idx){
+selected=idx;const x=data[idx];
+detail.style.display="block";
+detail.innerHTML=`<div class="small">Selected Node</div>
+<h2>${esc(x.title)}</h2>
+<div class="meta"><span class="badge ${x.importance}">${esc(x.importance)}</span><span>${esc(x.source||"")}</span><span>${esc(x.date||"")}</span></div>
+<div class="box"><b>Category</b><br>${esc(x.category||"")} / ${esc(x.subcategory||"")}</div>
+<div class="box"><b>Summary</b><br><span class="small">${esc(x.summary||"")}</span></div>
+<div class="box"><b>Tags</b><br>${(x.tags||[]).map(t=>`<span class="tag">${esc(t)}</span>`).join(" ")}</div>
+<div class="actions">
+<button class="btn" onclick="openUrl()">スレッドを開く</button>
+<button class="btn" onclick="editSelected()">編集</button>
+<button class="btn danger" onclick="deleteSelected()">削除</button>
+</div>`;
 }
-
-function openModal(){
-document.getElementById("modal").style.display="flex"
+function openUrl(){const x=data[selected];if(x&&x.url)window.open(x.url,"_blank");else alert("URL未登録。編集からURLを入れて。");}
+function editSelected(){openEditor(selected);}
+function deleteSelected(){if(selected!==null&&confirm("削除する？")){data.splice(selected,1);selected=null;render();detail.innerHTML='<div class="small">Selected Node</div><h2>削除済み</h2>';}}
+function openEditor(idx=null){
+editing=idx;
+const x=idx===null?{title:"",importance:"mid",category:"",subcategory:"",date:"",source:"chatgpt",url:"",summary:"",tags:[]}:data[idx];
+modalTitle.textContent=idx===null?"Add Knowledge":"Edit Knowledge";
+fTitle.value=x.title||"";fImportance.value=x.importance||"mid";fCategory.value=x.category||"";fSubcategory.value=x.subcategory||"";
+fDate.value=x.date||"";fSource.value=x.source||"chatgpt";fUrl.value=x.url||"";fSummary.value=x.summary||"";fTags.value=(x.tags||[]).join(", ");
+modal.classList.add("on");
 }
-
-function saveKnowledge(){
-
-const item = {
-title:document.getElementById("title").value,
-importance:document.getElementById("importance").value,
-tags:document.getElementById("tags").value.split(","),
-url:document.getElementById("url").value,
-summary:document.getElementById("summary").value
+function closeModal(){modal.classList.remove("on");}
+function saveItem(){
+const item={title:fTitle.value,importance:fImportance.value,category:fCategory.value,subcategory:fSubcategory.value,date:fDate.value,source:fSource.value,url:fUrl.value,summary:fSummary.value,tags:fTags.value.split(",").map(s=>s.trim()).filter(Boolean)};
+if(editing===null)data.unshift(item);else data[editing]=item;
+closeModal();render();if(editing!==null)selectItem(editing);
 }
-
-knowledge.unshift(item)
-
-document.getElementById("modal").style.display="none"
-
-render()
-
+function openImport(){importModal.classList.add("on");}
+function closeImport(){importModal.classList.remove("on");}
+function normalize(x){return {title:x.title||"",url:x.url||"",category:x.category||"未分類",subcategory:x.subcategory||"",importance:x.importance||"mid",summary:x.summary||"",date:x.date||"",source:x.source||"chatgpt",tags:Array.isArray(x.tags)?x.tags:[x.category,x.subcategory].filter(Boolean)};}
+function doImport(){
+try{const arr=JSON.parse(importText.value);if(!Array.isArray(arr))throw new Error("not array");const add=arr.map(normalize);data=[...add,...data];closeImport();render();alert(add.length+"件取り込み完了");}
+catch(e){alert("JSONが読めない。先頭が [ 、末尾が ] か確認。");}
 }
-
-document.getElementById("search").addEventListener("input",(e)=>{
-
-const q=e.target.value.toLowerCase()
-
-const filtered=knowledge.filter(item=>
-item.title.toLowerCase().includes(q) ||
-item.summary.toLowerCase().includes(q)
-)
-
-render(filtered)
-
-})
-
-render()
-
+function resetSeed(){if(confirm("初期データに戻す？")){data=SEED;selected=null;render();}}
+function exportJson(){
+const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
+const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="matsu-knowledge.json";a.click();
+}
+q.addEventListener("input",render);
+render();
 </script>
-
 </body>
 </html>
