@@ -20,7 +20,7 @@ radial-gradient(circle at 65% 100%,rgba(139,92,246,.20),transparent 35%),
 var(--bg);
 color:var(--text);min-height:100vh;
 }
-.app{display:grid;grid-template-columns:280px 1fr 360px;min-height:100vh}
+.app{display:grid;grid-template-columns:280px 1fr 380px;min-height:100vh}
 .side{padding:22px;border-right:1px solid var(--line);background:rgba(5,8,18,.55);backdrop-filter:blur(22px);height:100vh;position:sticky;top:0;overflow:auto}
 .logo{font-size:27px;font-weight:900;letter-spacing:-.04em}
 .sub{font-size:12px;color:var(--muted);margin:4px 0 22px;line-height:1.5}
@@ -40,18 +40,19 @@ textarea{min-height:120px;resize:vertical}
 .stat b{font-size:28px}
 .stat span{display:block;color:var(--muted);font-size:12px;margin-top:3px}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(285px,1fr));gap:14px}
-.card{position:relative;min-height:220px;background:linear-gradient(180deg,rgba(255,255,255,.09),rgba(255,255,255,.045));border:1px solid var(--line);border-radius:22px;padding:18px;cursor:pointer;transition:.2s;overflow:hidden}
+.card{position:relative;min-height:245px;background:linear-gradient(180deg,rgba(255,255,255,.09),rgba(255,255,255,.045));border:1px solid var(--line);border-radius:22px;padding:18px;cursor:pointer;transition:.2s;overflow:hidden}
 .card:hover{transform:translateY(-3px);border-color:rgba(91,124,250,.55);box-shadow:0 18px 46px rgba(0,0,0,.28)}
 .card h3{margin:12px 0 9px;font-size:18px;line-height:1.35;letter-spacing:-.02em}
 .meta{color:var(--muted);font-size:12px;display:flex;gap:8px;flex-wrap:wrap}
-.summary{color:#cbd5e1;font-size:13px;line-height:1.65;margin:12px 0 44px}
+.summary{color:#cbd5e1;font-size:13px;line-height:1.65;margin:12px 0}
+.highlightMini{font-size:12px;line-height:1.55;color:#e0f2fe;background:rgba(34,211,238,.10);border:1px solid rgba(34,211,238,.16);border-radius:14px;padding:10px;margin-bottom:44px}
 .tags{display:flex;gap:6px;flex-wrap:wrap;position:absolute;bottom:16px;left:18px;right:18px}
 .tag{font-size:11px;color:#dbeafe;background:rgba(91,124,250,.18);border:1px solid rgba(91,124,250,.22);padding:5px 8px;border-radius:999px}
 .scoreBadge{display:inline-block;font-size:12px;font-weight:900;padding:6px 10px;border-radius:999px;background:rgba(91,124,250,.22);color:#dbeafe}
 .scoreHot{background:rgba(251,113,133,.22);color:#fecdd3}
 .scoreMid{background:rgba(245,158,11,.22);color:#fde68a}
 .scoreLow{background:rgba(34,197,94,.20);color:#bbf7d0}
-.scoreInput{width:76px!important;padding:8px 10px!important;border-radius:10px!important;text-align:center;font-weight:900}
+.scoreInput{width:90px!important;padding:8px 10px!important;border-radius:10px!important;text-align:center;font-weight:900}
 .detail{padding:22px;border-left:1px solid var(--line);background:rgba(5,8,18,.48);backdrop-filter:blur(22px);height:100vh;position:sticky;top:0;overflow:auto}
 .detail h2{font-size:23px;line-height:1.25;margin:10px 0}
 .box{border:1px solid var(--line);border-radius:18px;background:var(--panel);padding:14px;margin:12px 0}
@@ -60,7 +61,7 @@ textarea{min-height:120px;resize:vertical}
 .danger{background:rgba(251,113,133,.14)!important}
 .modal{position:fixed;inset:0;background:rgba(0,0,0,.70);display:none;align-items:center;justify-content:center;padding:20px;z-index:20;backdrop-filter:blur(10px)}
 .modal.on{display:flex}
-.modalin{width:min(780px,100%);max-height:92vh;overflow:auto;background:#0f172a;border:1px solid var(--line);border-radius:24px;padding:22px}
+.modalin{width:min(820px,100%);max-height:92vh;overflow:auto;background:#0f172a;border:1px solid var(--line);border-radius:24px;padding:22px}
 .formgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .field{display:grid;gap:6px;margin-bottom:12px}
 label{font-size:12px;color:var(--muted);font-weight:900}
@@ -83,7 +84,7 @@ a{color:#93c5fd}
 <div class="app">
 <aside class="side">
 <div class="logo">Matsu Knowledge OS</div>
-<div class="sub">ChatGPT履歴入り。Claude / NotebookLM JSONも取り込み可能。</div>
+<div class="sub">全スレッド0点スタート。点数は自分で編集。ハイライト付き。</div>
 <div class="nav" id="nav"></div>
 <div class="sideActions">
 <button class="btn primary" onclick="openEditor()">＋ Add</button>
@@ -110,7 +111,7 @@ a{color:#93c5fd}
 <aside class="detail" id="detail">
 <div class="small">Selected Node</div>
 <h2>カードを選択</h2>
-<div class="box small">カードを押すと、要約・タグ・URL・編集・削除がここに出る。</div>
+<div class="box small">カードを押すと、要約・ハイライト・タグ・URL・編集・削除がここに出る。</div>
 </aside>
 </div>
 
@@ -125,9 +126,10 @@ a{color:#93c5fd}
 <div class="field"><label>Date</label><input id="fDate"></div>
 <div class="field"><label>Source</label><select id="fSource"><option>chatgpt</option><option>claude</option><option>notebooklm</option><option>manual</option></select></div>
 </div>
-<div class="field"><label>URL</label><input id="fUrl"></div>
+<div class="field"><label>URL</label><input id="fUrl" placeholder="ChatGPT/Claude/NotebookLMのスレッドURL"></div>
 <div class="field"><label>Tags（カンマ区切り）</label><input id="fTags"></div>
 <div class="field"><label>Summary</label><textarea id="fSummary"></textarea></div>
+<div class="field"><label>Highlight</label><textarea id="fHighlight"></textarea></div>
 <div class="actions" style="grid-template-columns:1fr 1fr">
 <button class="btn" onclick="closeModal()">Cancel</button>
 <button class="btn primary" onclick="saveItem()">Save</button>
@@ -138,8 +140,8 @@ a{color:#93c5fd}
 <div class="modal" id="importModal">
 <div class="modalin">
 <h2>JSON取込</h2>
-<p class="small">ChatGPT / Claude / NotebookLM で出したJSON配列を貼る。既存データに追加される。</p>
-<textarea id="importText" class="importArea" placeholder='[{"title":"...","url":"","category":"...","subcategory":"...","score":90,"summary":"...","date":"2026/05/23","source":"chatgpt","tags":["..."]}]'></textarea>
+<p class="small">ChatGPT / Claude / NotebookLM で出したJSON配列を貼る。score未指定なら0点で入る。</p>
+<textarea id="importText" class="importArea" placeholder='[{"title":"...","url":"","category":"...","subcategory":"...","score":0,"summary":"...","highlight":"...","date":"2026/05/23","source":"chatgpt","tags":["..."]}]'></textarea>
 <div class="actions" style="grid-template-columns:1fr 1fr">
 <button class="btn" onclick="closeImport()">Cancel</button>
 <button class="btn primary" onclick="doImport()">Import</button>
@@ -148,31 +150,30 @@ a{color:#93c5fd}
 </div>
 
 <script>
-const SEED = [{"title": "GitHubアクセスエラー対処法", "url": "", "category": "テクノロジー学習", "subcategory": "GitHub/ネットワーク", "summary": "GitHubに入れない問題の切り分け。Google検索は可能でネット自体は動いている前提。", "date": "2026/05/23", "source": "chatgpt", "tags": ["GitHub", "ネットワーク", "トラブル"], "score": 60}, {"title": "待機時間予測", "url": "", "category": "ライフスタイル", "subcategory": "外出/待ち時間", "summary": "順番待ちの残り時間と、グレー空席を作っている理由を推測。", "date": "2026/05/23", "source": "chatgpt", "tags": ["外出", "待ち時間"], "score": 25}, {"title": "会話まとめJSON出力", "url": "", "category": "テクノロジー学習", "subcategory": "Knowledge OS", "summary": "今月のChatGPT会話をJSON配列で整理するためのフォーマットを指定。", "date": "2026/05/22", "source": "chatgpt", "tags": ["JSON", "会話整理", "Knowledge OS"], "score": 90}, {"title": "PJ名提案と選定", "url": "", "category": "不動産ビジネス", "subcategory": "英語メール/IC対応", "summary": "Steve向けメール、件名、写真共有、ICメモ事前レビューへの返信英文を調整。", "date": "2026/04/30", "source": "chatgpt", "tags": ["英語", "IC", "Steve", "メール"], "score": 90}, {"title": "Proforma英訳提案", "url": "", "category": "不動産ビジネス", "subcategory": "英訳/投資メモ", "summary": "PJ Apex関連のメモ送付、Portfolio Analysis依頼、FIC予定などを英語化。", "date": "2026/05/14", "source": "chatgpt", "tags": ["Apex", "FIC", "英訳"], "score": 90}, {"title": "探偵になる方法", "url": "", "category": "ライフスタイル", "subcategory": "雑談/キャリア", "summary": "コナンに憧れた文脈で、探偵になる現実的な方法を整理。", "date": "2026/05/21", "source": "chatgpt", "tags": ["探偵", "雑談"], "score": 25}, {"title": "東京オフィス市場分析", "url": "", "category": "不動産ビジネス", "subcategory": "市場レポート翻訳", "summary": "PJ Apex R&SドラフトPDFの全文日本語訳と要約を依頼。", "date": "2026/05/20", "source": "chatgpt", "tags": ["東京オフィス", "翻訳", "R&S"], "score": 90}, {"title": "STO分配金の違和感", "url": "", "category": "不動産ビジネス", "subcategory": "STO/利回り", "summary": "STO商品の分配金差異、1766の安定性、巡航3.5%の妥当性を検討。", "date": "2026/05/20", "source": "chatgpt", "tags": ["STO", "分配金", "利回り"], "score": 60}, {"title": "PC電源設定と休止状態", "url": "", "category": "テクノロジー学習", "subcategory": "Windows/Surface", "summary": "スリープ・休止状態・電源ボタン・カバー動作の最適設定を確認。", "date": "2025/08/13", "source": "chatgpt", "tags": ["Windows", "Surface", "休止状態"], "score": 60}, {"title": "PMサービス評価", "url": "", "category": "不動産ビジネス", "subcategory": "PM評価", "summary": "帝国不動産PMサービスの体制、KPI、原状回復、平均空室日数を評価。", "date": "2026/05/20", "source": "chatgpt", "tags": ["PM", "管理会社", "KPI"], "score": 90}, {"title": "英語トランスクリプト解説", "url": "", "category": "テクノロジー学習", "subcategory": "英語学習/松嶋式", "summary": "英語トランスクリプト教材を松嶋式で逐語解説し、続き運用を実施。", "date": "2025/10/09", "source": "chatgpt", "tags": ["英語", "松嶋式", "トランスクリプト"], "score": 60}, {"title": "YouTube英語字幕取得", "url": "", "category": "テクノロジー学習", "subcategory": "YouTube/字幕", "summary": "YouTube字幕取得がブロックされた場合の代替コピー方法を確認。", "date": "2026/05/19", "source": "chatgpt", "tags": ["YouTube", "字幕", "英語"], "score": 60}, {"title": "Excelデータラベル追加", "url": "", "category": "テクノロジー学習", "subcategory": "Excel/グラフ", "summary": "Excelグラフにデータラベルを追加する方法を確認。", "date": "2026/05/19", "source": "chatgpt", "tags": ["Excel", "グラフ"], "score": 25}, {"title": "日本市場の韻", "url": "", "category": "不動産ビジネス", "subcategory": "市場コメント", "summary": "Japan Weekly Takeの内容を読み、簡潔な評価と要約を作成。", "date": "2026/05/19", "source": "chatgpt", "tags": ["日本市場", "メール", "要約"], "score": 60}, {"title": "ビッグデータAI分析", "url": "", "category": "新規ビジネス探索", "subcategory": "AIデータ事業", "summary": "株式・不動産・心理・広告等のデータ取得先、AI投入、分析、収益化を表化。", "date": "2026/05/14", "source": "chatgpt", "tags": ["ビッグデータ", "AI分析", "収益化"], "score": 90}, {"title": "週報ファイル解析", "url": "", "category": "不動産ビジネス", "subcategory": "週報/数値分析", "summary": "フロンティアレジデンスザタワー品川の週報を要約し数値分析。", "date": "2026/05/18", "source": "chatgpt", "tags": ["週報", "品川", "分析"], "score": 90}, {"title": "性格分析とSynth X", "url": "", "category": "新規ビジネス探索", "subcategory": "Synth X/ブランディング", "summary": "性格分析、パーソナルカラー、Synth Xのロゴ・カラー方針を検討。", "date": "2026/05/17", "source": "chatgpt", "tags": ["Synth X", "ロゴ", "ブランディング"], "score": 90}, {"title": "IPI会社名提案", "url": "", "category": "新規ビジネス探索", "subcategory": "不動産ファンド新会社", "summary": "Island Peak Investmentの会社名、ロゴ、役職、日本語英語併記を検討。", "date": "2026/05/17", "source": "chatgpt", "tags": ["IPI", "新会社", "ロゴ"], "score": 90}, {"title": "Shimauma Capital構想", "url": "", "category": "新規ビジネス探索", "subcategory": "ファンド名/相棒性", "summary": "島ちゃんとの相棒性を表す会社名・ロゴ・役職案を検討。", "date": "2026/05/17", "source": "chatgpt", "tags": ["Shimauma", "会社名", "ファンド"], "score": 90}, {"title": "不動産権利形態まとめ", "url": "", "category": "不動産ビジネス", "subcategory": "権利形態/区分所有", "summary": "敷地権、土地共有、建物共有、REIT事例を縦表形式で整理。", "date": "2026/05/15", "source": "chatgpt", "tags": ["敷地権", "共有", "区分所有"], "score": 90}, {"title": "モニター文字サイズ", "url": "", "category": "テクノロジー学習", "subcategory": "Windows/Outlook表示", "summary": "外部モニター接続時にOutlookなどの文字を小さくする方法を確認。", "date": "2026/05/15", "source": "chatgpt", "tags": ["Outlook", "モニター", "表示"], "score": 60}, {"title": "ポッドキャスト収益化", "url": "", "category": "X・noteコンテンツ事業", "subcategory": "街/建築歴史", "summary": "駅・街・建築歴史の雑学ポッドキャストについて収益化手順とネタ出し。", "date": "2026/05/14", "source": "chatgpt", "tags": ["ポッドキャスト", "街", "収益化"], "score": 90}, {"title": "CSV一括DLとKDDI分析", "url": "", "category": "テクノロジー学習", "subcategory": "データ処理/PowerShell", "summary": "KDDI Location AnalyzerのCSVやPDFを使ったデータ処理とAI分析を検討。", "date": "2026/05/13", "source": "chatgpt", "tags": ["CSV", "KDDI", "PowerShell"], "score": 90}, {"title": "CAGR英語表現", "url": "", "category": "不動産ビジネス", "subcategory": "英語表現", "summary": "CAGR適用後、調整中、内覧、行程表などの英語表現を作成。", "date": "2026/05/06", "source": "chatgpt", "tags": ["英語", "CAGR", "内覧"], "score": 60}, {"title": "サービス分類の整理", "url": "", "category": "新規ビジネス探索", "subcategory": "サービス設計", "summary": "サービス分類を修正し、かっこいい1枚紙にする方向を検討。", "date": "2026/05/14", "source": "chatgpt", "tags": ["サービス分類", "資料"], "score": 60}, {"title": "ヘルスケア施設補助金", "url": "", "category": "不動産ビジネス", "subcategory": "ヘルスケア/補助金", "summary": "ヘルスケア施設建築時に取得可能な補助金の出どころを確認。", "date": "2026/05/14", "source": "chatgpt", "tags": ["ヘルスケア", "補助金"], "score": 60}, {"title": "筋肉痛と毎日トレ", "url": "", "category": "ライフスタイル", "subcategory": "フィットネス/MMA", "summary": "下半身筋肉痛を踏まえ、職場階段でできる10分自重トレを設計。", "date": "2026/05/14", "source": "chatgpt", "tags": ["筋トレ", "MMA", "階段"], "score": 60}, {"title": "AIによる仕事の変化", "url": "", "category": "新規ビジネス探索", "subcategory": "Synth X/一人ユニコーン", "summary": "AIで仕事コストが激減する構造、会社名、Synth X案を検討。", "date": "2026/05/13", "source": "chatgpt", "tags": ["AI", "Synth X", "新結合"], "score": 90}, {"title": "大喜利お題と採点", "url": "", "category": "ライフスタイル", "subcategory": "大喜利/創作", "summary": "大喜利回答の採点、改善、お題出しを実施。", "date": "2026/05/12", "source": "chatgpt", "tags": ["大喜利", "創作"], "score": 25}, {"title": "Excelデータ効率化", "url": "", "category": "テクノロジー学習", "subcategory": "Excel/PowerShell", "summary": "ExcelファイルのCSV化、PowerShellの意味と使い道を整理。", "date": "2026/05/12", "source": "chatgpt", "tags": ["Excel", "CSV", "PowerShell"], "score": 90}, {"title": "独立契約の提案", "url": "", "category": "新規ビジネス探索", "subcategory": "桜十字/報酬条件", "summary": "ソーシング・UW・アドバイザリー報酬、取得会議参加案を整理。", "date": "2026/05/11", "source": "chatgpt", "tags": ["独立", "報酬", "桜十字"], "score": 90}, {"title": "味スタ観戦の並び", "url": "", "category": "ライフスタイル", "subcategory": "サッカー観戦", "summary": "味スタで並ぶ理由、自由席、練習時間、ホーム側配置を確認。", "date": "2026/05/10", "source": "chatgpt", "tags": ["味スタ", "FC東京", "観戦"], "score": 25}, {"title": "松嶋式訳", "url": "", "category": "テクノロジー学習", "subcategory": "英語学習/松嶋式", "summary": "画像英文を松嶋式で解説し、ain’tの読みも確認。", "date": "2026/05/09", "source": "chatgpt", "tags": ["松嶋式", "英語"], "score": 60}, {"title": "RIZINファイトマネー", "url": "", "category": "ライフスタイル", "subcategory": "格闘技", "summary": "RIZIN選手のファイトマネー推測と、試合不成立時の支払いを確認。", "date": "2026/05/08", "source": "chatgpt", "tags": ["RIZIN", "格闘技"], "score": 25}, {"title": "妊娠確率の計算", "url": "", "category": "ライフスタイル", "subcategory": "健康/妊娠リスク", "summary": "生理周期から排卵日を予測し、妊娠可能性とリスク低減行動を整理。", "date": "2026/05/04", "source": "chatgpt", "tags": ["妊娠", "排卵日", "健康"], "score": 60}, {"title": "車の洗車とヴェラール", "url": "", "category": "ライフスタイル", "subcategory": "車/ヴェラール", "summary": "ヴェラールのホース、ワイパー引っかかり、雨シミ、ゼロウォーターを相談。", "date": "2025/12/10", "source": "chatgpt", "tags": ["ヴェラール", "洗車", "車"], "score": 60}, {"title": "世界の歓楽街調査", "url": "", "category": "ライフスタイル", "subcategory": "旅行/歓楽街", "summary": "世界の歓楽街、安全性、合法性、価格、チューリッヒやタイ等を比較。", "date": "2026/05/01", "source": "chatgpt", "tags": ["旅行", "歓楽街"], "score": 25}, {"title": "土地共有と取り壊し同意", "url": "", "category": "不動産ビジネス", "subcategory": "共有/法務", "summary": "土地共有持分8%と建物完全所有の場合、取り壊しに共有者同意が必要か検討。", "date": "2026/04/30", "source": "chatgpt", "tags": ["共有", "取り壊し", "法務"], "score": 90}];
-let data = JSON.parse(localStorage.getItem("matsu_knowledge_final_v2") || localStorage.getItem("matsu_knowledge_final_v1") || "null") || SEED;
+const SEED = [{"title": "GitHubアクセスエラー対処法", "url": "", "category": "テクノロジー学習", "subcategory": "GitHub/ネットワーク", "score": 0, "summary": "GitHubに入れない問題の切り分け。Google検索は可能でネット自体は動いている前提。", "highlight": "GitHub接続不良を、ネット全体の問題ではなくGitHub側・ブラウザ側・認証側に切り分ける発想。", "date": "2026/05/23", "source": "chatgpt", "tags": ["GitHub", "ネットワーク", "トラブル"]}, {"title": "待機時間予測", "url": "", "category": "ライフスタイル", "subcategory": "外出/待ち時間", "score": 0, "summary": "順番待ちの残り時間と、グレー空席を作っている理由を推測。", "highlight": "待ち順・空席運用から、店側のオペレーション都合を推測する小ネタ。", "date": "2026/05/23", "source": "chatgpt", "tags": ["外出", "待ち時間"]}, {"title": "会話まとめJSON出力", "url": "", "category": "テクノロジー学習", "subcategory": "Knowledge OS", "score": 0, "summary": "今月のChatGPT会話をJSON配列で整理するためのフォーマットを指定。", "highlight": "Knowledge OSの入口。会話履歴を構造化データに変える最初の設計。", "date": "2026/05/22", "source": "chatgpt", "tags": ["JSON", "会話整理", "Knowledge OS"]}, {"title": "PJ名提案と選定", "url": "", "category": "不動産ビジネス", "subcategory": "英語メール/IC対応", "score": 0, "summary": "Steve向けメール、件名、写真共有、ICメモ事前レビューへの返信英文を調整。", "highlight": "目上のICメンバー向けに、丁寧さと簡潔さのバランスを調整した実務英語。", "date": "2026/04/30", "source": "chatgpt", "tags": ["英語", "IC", "Steve", "メール"]}, {"title": "Proforma英訳提案", "url": "", "category": "不動産ビジネス", "subcategory": "英訳/投資メモ", "score": 0, "summary": "PJ Apex関連のメモ送付、Portfolio Analysis依頼、FIC予定などを英語化。", "highlight": "FIC予定やPortfolio Analysis依頼など、投資実務メールの英語化を細かく調整。", "date": "2026/05/14", "source": "chatgpt", "tags": ["Apex", "FIC", "英訳"]}, {"title": "探偵になる方法", "url": "", "category": "ライフスタイル", "subcategory": "雑談/キャリア", "score": 0, "summary": "コナンに憧れた文脈で、探偵になる現実的な方法を整理。", "highlight": "コナン憧れから、現実の探偵業のなり方へ落とす雑談。", "date": "2026/05/21", "source": "chatgpt", "tags": ["探偵", "雑談"]}, {"title": "東京オフィス市場分析", "url": "", "category": "不動産ビジネス", "subcategory": "市場レポート翻訳", "score": 0, "summary": "PJ Apex R&SドラフトPDFの全文日本語訳と要約を依頼。", "highlight": "東京オフィス市場の外部レポートを、投資判断に使える形で訳す流れ。", "date": "2026/05/20", "source": "chatgpt", "tags": ["東京オフィス", "翻訳", "R&S"]}, {"title": "STO分配金の違和感", "url": "", "category": "不動産ビジネス", "subcategory": "STO/利回り", "score": 0, "summary": "STO商品の分配金差異、1766の安定性、巡航3.5%の妥当性を検討。", "highlight": "表示分配金だけでなく、真の巡航利回りを疑う投資家目線。", "date": "2026/05/20", "source": "chatgpt", "tags": ["STO", "分配金", "利回り"]}, {"title": "PC電源設定と休止状態", "url": "", "category": "テクノロジー学習", "subcategory": "Windows/Surface", "score": 0, "summary": "スリープ・休止状態・電源ボタン・カバー動作の最適設定を確認。", "highlight": "1分移動は閉じるだけ、帰宅時はボタンで休止、という実務寄りPC運用。", "date": "2025/08/13", "source": "chatgpt", "tags": ["Windows", "Surface", "休止状態"]}, {"title": "PMサービス評価", "url": "", "category": "不動産ビジネス", "subcategory": "PM評価", "score": 0, "summary": "帝国不動産PMサービスの体制、KPI、原状回復、平均空室日数を評価。", "highlight": "平均空室日数22.2日と原状回復6.9日をPM力の指標として評価。", "date": "2026/05/20", "source": "chatgpt", "tags": ["PM", "管理会社", "KPI"]}, {"title": "英語トランスクリプト解説", "url": "", "category": "テクノロジー学習", "subcategory": "英語学習/松嶋式", "score": 0, "summary": "英語トランスクリプト教材を松嶋式で逐語解説し、続き運用を実施。", "highlight": "松嶋式フォーマット確立。英文→訳→タグ解説→つまずき度で処理。", "date": "2025/10/09", "source": "chatgpt", "tags": ["英語", "松嶋式", "トランスクリプト"]}, {"title": "YouTube英語字幕取得", "url": "", "category": "テクノロジー学習", "subcategory": "YouTube/字幕", "score": 0, "summary": "YouTube字幕取得がブロックされた場合の代替コピー方法を確認。", "highlight": "YouTubeが字幕取得をブロックした時の手作業ルートを詰めた回。", "date": "2026/05/19", "source": "chatgpt", "tags": ["YouTube", "字幕", "英語"]}, {"title": "Excelデータラベル追加", "url": "", "category": "テクノロジー学習", "subcategory": "Excel/グラフ", "score": 0, "summary": "Excelグラフにデータラベルを追加する方法を確認。", "highlight": "資料作成時の小技。グラフの見やすさを上げる操作。", "date": "2026/05/19", "source": "chatgpt", "tags": ["Excel", "グラフ"]}, {"title": "日本市場の韻", "url": "", "category": "不動産ビジネス", "subcategory": "市場コメント", "score": 0, "summary": "Japan Weekly Takeの内容を読み、簡潔な評価と要約を作成。", "highlight": "市場が『繰り返し』なのか『韻を踏む』のかという投資視点の整理。", "date": "2026/05/19", "source": "chatgpt", "tags": ["日本市場", "メール", "要約"]}, {"title": "ビッグデータAI分析", "url": "", "category": "新規ビジネス探索", "subcategory": "AIデータ事業", "score": 0, "summary": "株式・不動産・心理・広告等のデータ取得先、AI投入、分析、収益化を表化。", "highlight": "データ→AI大量投入→AI分析→マネタイズという横断事業の原型。", "date": "2026/05/14", "source": "chatgpt", "tags": ["ビッグデータ", "AI分析", "収益化"]}, {"title": "週報ファイル解析", "url": "", "category": "不動産ビジネス", "subcategory": "週報/数値分析", "score": 0, "summary": "フロンティアレジデンスザタワー品川の週報を要約し数値分析。", "highlight": "PM週報をAIに読ませて、数値と実務示唆を抽出する使い方。", "date": "2026/05/18", "source": "chatgpt", "tags": ["週報", "品川", "分析"]}, {"title": "性格分析とSynth X", "url": "", "category": "新規ビジネス探索", "subcategory": "Synth X/ブランディング", "score": 0, "summary": "性格分析、パーソナルカラー、Synth Xのロゴ・カラー方針を検討。", "highlight": "Synth Xの色・ロゴ・世界観を、本人の性格や資料デザインに接続。", "date": "2026/05/17", "source": "chatgpt", "tags": ["Synth X", "ロゴ", "ブランディング"]}, {"title": "IPI会社名提案", "url": "", "category": "新規ビジネス探索", "subcategory": "不動産ファンド新会社", "score": 0, "summary": "Island Peak Investmentの会社名、ロゴ、役職、日本語英語併記を検討。", "highlight": "奥村さんの登山文脈を、ファンド名・ロゴ・組織設計へ落とした回。", "date": "2026/05/17", "source": "chatgpt", "tags": ["IPI", "新会社", "ロゴ"]}, {"title": "Shimauma Capital構想", "url": "", "category": "新規ビジネス探索", "subcategory": "ファンド名/相棒性", "score": 0, "summary": "島ちゃんとの相棒性を表す会社名・ロゴ・役職案を検討。", "highlight": "分析の松嶋×営業の島ちゃんという相棒性をブランド化する構想。", "date": "2026/05/17", "source": "chatgpt", "tags": ["Shimauma", "会社名", "ファンド"]}, {"title": "不動産権利形態まとめ", "url": "", "category": "不動産ビジネス", "subcategory": "権利形態/区分所有", "score": 0, "summary": "敷地権、土地共有、建物共有、REIT事例を縦表形式で整理。", "highlight": "敷地権は区分所有建物が前提、建物共有なら土地共有、という整理。", "date": "2026/05/15", "source": "chatgpt", "tags": ["敷地権", "共有", "区分所有"]}, {"title": "モニター文字サイズ", "url": "", "category": "テクノロジー学習", "subcategory": "Windows/Outlook表示", "score": 0, "summary": "外部モニター接続時にOutlookなどの文字を小さくする方法を確認。", "highlight": "Outlookの9ptより小さくしたいという実務画面調整。", "date": "2026/05/15", "source": "chatgpt", "tags": ["Outlook", "モニター", "表示"]}, {"title": "ポッドキャスト収益化", "url": "", "category": "X・noteコンテンツ事業", "subcategory": "街/建築歴史", "score": 0, "summary": "駅・街・建築歴史の雑学ポッドキャストについて収益化手順とネタ出し。", "highlight": "街・駅・建築歴史の雑学をコンテンツ事業化する具体案。", "date": "2026/05/14", "source": "chatgpt", "tags": ["ポッドキャスト", "街", "収益化"]}, {"title": "CSV一括DLとKDDI分析", "url": "", "category": "テクノロジー学習", "subcategory": "データ処理/PowerShell", "score": 0, "summary": "KDDI Location AnalyzerのCSVやPDFを使ったデータ処理とAI分析を検討。", "highlight": "位置情報CSVをAI分析素材にする、データ事業寄りの素材回。", "date": "2026/05/13", "source": "chatgpt", "tags": ["CSV", "KDDI", "PowerShell"]}, {"title": "CAGR英語表現", "url": "", "category": "不動産ビジネス", "subcategory": "英語表現", "score": 0, "summary": "CAGR適用後、調整中、内覧、行程表などの英語表現を作成。", "highlight": "投資実務の細かい英語表現を即戦力化。", "date": "2026/05/06", "source": "chatgpt", "tags": ["英語", "CAGR", "内覧"]}, {"title": "サービス分類の整理", "url": "", "category": "新規ビジネス探索", "subcategory": "サービス設計", "score": 0, "summary": "サービス分類を修正し、かっこいい1枚紙にする方向を検討。", "highlight": "サービス分類を単なる表ではなく、事業説明資料に昇華する方向。", "date": "2026/05/14", "source": "chatgpt", "tags": ["サービス分類", "資料"]}, {"title": "ヘルスケア施設補助金", "url": "", "category": "不動産ビジネス", "subcategory": "ヘルスケア/補助金", "score": 0, "summary": "ヘルスケア施設建築時に取得可能な補助金の出どころを確認。", "highlight": "ヘルスケア不動産の補助金ソースを探索する実務調査。", "date": "2026/05/14", "source": "chatgpt", "tags": ["ヘルスケア", "補助金"]}, {"title": "筋肉痛と毎日トレ", "url": "", "category": "ライフスタイル", "subcategory": "フィットネス/MMA", "score": 0, "summary": "下半身筋肉痛を踏まえ、職場階段でできる10分自重トレを設計。", "highlight": "毎日続けられる中強度トレへの発想転換。", "date": "2026/05/14", "source": "chatgpt", "tags": ["筋トレ", "MMA", "階段"]}, {"title": "AIによる仕事の変化", "url": "", "category": "新規ビジネス探索", "subcategory": "Synth X/一人ユニコーン", "score": 0, "summary": "AIで仕事コストが激減する構造、会社名、Synth X案を検討。", "highlight": "500〜1000万円の仕事がAIで1〜2万円になる、という一人ユニコーン思想。", "date": "2026/05/13", "source": "chatgpt", "tags": ["AI", "Synth X", "新結合"]}, {"title": "大喜利お題と採点", "url": "", "category": "ライフスタイル", "subcategory": "大喜利/創作", "score": 0, "summary": "大喜利回答の採点、改善、お題出しを実施。", "highlight": "つまらない回答に厳しく、具体のズラしで笑いを作る遊び。", "date": "2026/05/12", "source": "chatgpt", "tags": ["大喜利", "創作"]}, {"title": "Excelデータ効率化", "url": "", "category": "テクノロジー学習", "subcategory": "Excel/PowerShell", "score": 0, "summary": "ExcelファイルのCSV化、PowerShellの意味と使い道を整理。", "highlight": "PowerShellを『PCを直接操作する指示』として体感した回。", "date": "2026/05/12", "source": "chatgpt", "tags": ["Excel", "CSV", "PowerShell"]}, {"title": "独立契約の提案", "url": "", "category": "新規ビジネス探索", "subcategory": "桜十字/報酬条件", "score": 0, "summary": "ソーシング・UW・アドバイザリー報酬、取得会議参加案を整理。", "highlight": "ソーシング/UW/報酬条件をフェーズ分けして、独立後の収益設計に接続。", "date": "2026/05/11", "source": "chatgpt", "tags": ["独立", "報酬", "桜十字"]}, {"title": "味スタ観戦の並び", "url": "", "category": "ライフスタイル", "subcategory": "サッカー観戦", "score": 0, "summary": "味スタで並ぶ理由、自由席、練習時間、ホーム側配置を確認。", "highlight": "指定席なのに並ぶ理由を、応援席や練習見学の観点で確認。", "date": "2026/05/10", "source": "chatgpt", "tags": ["味スタ", "FC東京", "観戦"]}, {"title": "松嶋式訳", "url": "", "category": "テクノロジー学習", "subcategory": "英語学習/松嶋式", "score": 0, "summary": "画像英文を松嶋式で解説し、ain’tの読みも確認。", "highlight": "松嶋式の要件、つまずき度、ain’tの読みまで確認。", "date": "2026/05/09", "source": "chatgpt", "tags": ["松嶋式", "英語"]}, {"title": "RIZINファイトマネー", "url": "", "category": "ライフスタイル", "subcategory": "格闘技", "score": 0, "summary": "RIZIN選手のファイトマネー推測と、試合不成立時の支払いを確認。", "highlight": "格闘技ビジネスの報酬構造を推測。", "date": "2026/05/08", "source": "chatgpt", "tags": ["RIZIN", "格闘技"]}, {"title": "妊娠確率の計算", "url": "", "category": "ライフスタイル", "subcategory": "健康/妊娠リスク", "score": 0, "summary": "生理周期から排卵日を予測し、妊娠可能性とリスク低減行動を整理。", "highlight": "周期データから排卵日カレンダーを作り、リスクを具体化。", "date": "2026/05/04", "source": "chatgpt", "tags": ["妊娠", "排卵日", "健康"]}, {"title": "車の洗車とヴェラール", "url": "", "category": "ライフスタイル", "subcategory": "車/ヴェラール", "score": 0, "summary": "ヴェラールのホース、ワイパー引っかかり、雨シミ、ゼロウォーターを相談。", "highlight": "高圧洗浄機ではなくホースが欲しい、という要望のズレを修正。", "date": "2025/12/10", "source": "chatgpt", "tags": ["ヴェラール", "洗車", "車"]}, {"title": "世界の歓楽街調査", "url": "", "category": "ライフスタイル", "subcategory": "旅行/歓楽街", "score": 0, "summary": "世界の歓楽街、安全性、合法性、価格、チューリッヒやタイ等を比較。", "highlight": "各国の歓楽街を安全性・価格・合法性で比較しようとした回。", "date": "2026/05/01", "source": "chatgpt", "tags": ["旅行", "歓楽街"]}, {"title": "土地共有と取り壊し同意", "url": "", "category": "不動産ビジネス", "subcategory": "共有/法務", "score": 0, "summary": "土地共有持分8%と建物完全所有の場合、取り壊しに共有者同意が必要か検討。", "highlight": "土地共有者の同意権限と建物所有者の取り壊し判断を切り分け。", "date": "2026/04/30", "source": "chatgpt", "tags": ["共有", "取り壊し", "法務"]}];
+let data = JSON.parse(localStorage.getItem("matsu_knowledge_zero_v1") || "null") || SEED;
 data = data.map(normalizeLegacy);
 let activeCat = "ALL";
 let selected = null;
 let editing = null;
 
-function saveLocal(){localStorage.setItem("matsu_knowledge_final_v2",JSON.stringify(data));}
+function clampScore(v){return Math.max(0,Math.min(100,Number(v)||0));}
+function scoreClass(s){s=Number(s||0);return s>=80?"scoreHot":s>=50?"scoreMid":"scoreLow";}
+function sortByScore(arr){return arr.slice().sort((a,b)=>(Number(b.score||0)-Number(a.score||0)) || String(b.date||"").localeCompare(String(a.date||"")));}
+function saveLocal(){localStorage.setItem("matsu_knowledge_zero_v1",JSON.stringify(data));}
 function normalizeLegacy(x){
-if(x.score===undefined){
-  x.score = x.importance==="high" ? 90 : x.importance==="mid" ? 60 : x.importance==="low" ? 25 : 50;
-}
+if(x.score===undefined) x.score=0;
 delete x.importance;
 x.score=clampScore(x.score);
+if(!x.highlight) x.highlight="";
 return x;
 }
 function esc(s){return String(s||"").replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
 function categories(){return ["ALL",...Array.from(new Set(data.map(x=>x.category||"未分類")))];}
 function icon(c){if(c.includes("不動産"))return"🏢";if(c.includes("新規"))return"🚀";if(c.includes("テクノロジー"))return"💻";if(c.includes("ライフ"))return"🚗";if(c.includes("X"))return"✍️";return"📁";}
-function clampScore(v){return Math.max(0,Math.min(100,Number(v)||0));}
-function scoreClass(s){s=Number(s||0);return s>=80?"scoreHot":s>=50?"scoreMid":"scoreLow";}
-function sortByScore(arr){return arr.slice().sort((a,b)=>(Number(b.score||0)-Number(a.score||0)) || String(b.date||"").localeCompare(String(a.date||"")));}
 function filtered(){
 const q=document.getElementById("q").value.toLowerCase();
-return sortByScore(data.filter(x=>(activeCat==="ALL"||x.category===activeCat)&&[x.title,x.summary,x.category,x.subcategory,(x.tags||[]).join(" "),x.source,x.date].join(" ").toLowerCase().includes(q)));
+return sortByScore(data.filter(x=>(activeCat==="ALL"||x.category===activeCat)&&[x.title,x.summary,x.highlight,x.category,x.subcategory,(x.tags||[]).join(" "),x.source,x.date].join(" ").toLowerCase().includes(q)));
 }
 function renderNav(){
 const n=document.getElementById("nav");n.innerHTML="";
@@ -203,6 +204,7 @@ div.innerHTML=`<div class="meta"><span class="scoreBadge ${scoreClass(x.score)}"
 <h3>${esc(x.title)}</h3>
 <div class="meta">${esc(x.category||"")} / ${esc(x.subcategory||"")}</div>
 <div class="summary">${esc(x.summary||"")}</div>
+<div class="highlightMini">★ ${esc(x.highlight||"")}</div>
 <div class="tags">${(x.tags||[]).slice(0,4).map(t=>`<span class="tag">${esc(t)}</span>`).join("")}</div>`;
 grid.appendChild(div);
 });
@@ -217,6 +219,8 @@ detail.innerHTML=`<div class="small">Selected Node</div>
 <div class="box"><b>Score</b><br><input class="scoreInput" type="number" min="0" max="100" value="${Number(x.score||0)}" onchange="quickScore(this.value)"></div>
 <div class="box"><b>Category</b><br>${esc(x.category||"")} / ${esc(x.subcategory||"")}</div>
 <div class="box"><b>Summary</b><br><span class="small">${esc(x.summary||"")}</span></div>
+<div class="box"><b>Highlight</b><br><span class="small">${esc(x.highlight||"")}</span></div>
+<div class="box"><b>URL</b><br><span class="small">${x.url?esc(x.url):"URL未登録"}</span></div>
 <div class="box"><b>Tags</b><br>${(x.tags||[]).map(t=>`<span class="tag">${esc(t)}</span>`).join(" ")}</div>
 <div class="actions">
 <button class="btn" onclick="openUrl()">スレッドを開く</button>
@@ -224,45 +228,32 @@ detail.innerHTML=`<div class="small">Selected Node</div>
 <button class="btn danger" onclick="deleteSelected()">削除</button>
 </div>`;
 }
-function quickScore(v){
-if(selected===null)return;
-const item=data[selected];
-item.score=clampScore(v);
-render();
-selected=data.indexOf(item);
-selectItem(selected);
-}
+function quickScore(v){if(selected===null)return;const item=data[selected];item.score=clampScore(v);render();selected=data.indexOf(item);selectItem(selected);}
 function openUrl(){const x=data[selected];if(x&&x.url)window.open(x.url,"_blank");else alert("URL未登録。編集からURLを入れて。");}
 function editSelected(){openEditor(selected);}
 function deleteSelected(){if(selected!==null&&confirm("削除する？")){data.splice(selected,1);selected=null;render();detail.innerHTML='<div class="small">Selected Node</div><h2>削除済み</h2>';}}
 function openEditor(idx=null){
 editing=idx;
-const x=idx===null?{title:"",score:50,category:"",subcategory:"",date:"",source:"chatgpt",url:"",summary:"",tags:[]}:data[idx];
+const x=idx===null?{title:"",score:0,category:"",subcategory:"",date:"",source:"chatgpt",url:"",summary:"",highlight:"",tags:[]}:data[idx];
 modalTitle.textContent=idx===null?"Add Knowledge":"Edit Knowledge";
-fTitle.value=x.title||"";fScore.value=Number(x.score ?? 50);fCategory.value=x.category||"";fSubcategory.value=x.subcategory||"";
-fDate.value=x.date||"";fSource.value=x.source||"chatgpt";fUrl.value=x.url||"";fSummary.value=x.summary||"";fTags.value=(x.tags||[]).join(", ");
+fTitle.value=x.title||"";fScore.value=Number(x.score ?? 0);fCategory.value=x.category||"";fSubcategory.value=x.subcategory||"";
+fDate.value=x.date||"";fSource.value=x.source||"chatgpt";fUrl.value=x.url||"";fSummary.value=x.summary||"";fHighlight.value=x.highlight||"";fTags.value=(x.tags||[]).join(", ");
 modal.classList.add("on");
 }
 function closeModal(){modal.classList.remove("on");}
 function saveItem(){
-const item={title:fTitle.value,score:clampScore(fScore.value),category:fCategory.value,subcategory:fSubcategory.value,date:fDate.value,source:fSource.value,url:fUrl.value,summary:fSummary.value,tags:fTags.value.split(",").map(s=>s.trim()).filter(Boolean)};
+const item={title:fTitle.value,score:clampScore(fScore.value),category:fCategory.value,subcategory:fSubcategory.value,date:fDate.value,source:fSource.value,url:fUrl.value,summary:fSummary.value,highlight:fHighlight.value,tags:fTags.value.split(",").map(s=>s.trim()).filter(Boolean)};
 if(editing===null)data.unshift(item);else data[editing]=item;
-closeModal();render();if(editing!==null)selectItem(editing);
+closeModal();render();if(editing!==null)selectItem(data.indexOf(item));
 }
 function openImport(){importModal.classList.add("on");}
 function closeImport(){importModal.classList.remove("on");}
-function normalize(x){
-let score = x.score;
-if(score===undefined){
-  score = x.importance==="high" ? 90 : x.importance==="mid" ? 60 : x.importance==="low" ? 25 : 50;
-}
-return {title:x.title||"",url:x.url||"",category:x.category||"未分類",subcategory:x.subcategory||"",score:clampScore(score),summary:x.summary||"",date:x.date||"",source:x.source||"chatgpt",tags:Array.isArray(x.tags)?x.tags:[x.category,x.subcategory].filter(Boolean)};
-}
+function normalize(x){return {title:x.title||"",url:x.url||"",category:x.category||"未分類",subcategory:x.subcategory||"",score:clampScore(x.score ?? 0),summary:x.summary||"",highlight:x.highlight||"",date:x.date||"",source:x.source||"chatgpt",tags:Array.isArray(x.tags)?x.tags:[x.category,x.subcategory].filter(Boolean)};}
 function doImport(){
 try{const arr=JSON.parse(importText.value);if(!Array.isArray(arr))throw new Error("not array");const add=arr.map(normalize);data=[...add,...data];closeImport();render();alert(add.length+"件取り込み完了");}
 catch(e){alert("JSONが読めない。先頭が [ 、末尾が ] か確認。");}
 }
-function resetSeed(){if(confirm("初期データに戻す？")){data=SEED;selected=null;render();}}
+function resetSeed(){if(confirm("初期データに戻す？")){data=SEED.map(normalizeLegacy);selected=null;render();}}
 function exportJson(){
 const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
 const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="matsu-knowledge.json";a.click();
