@@ -1,390 +1,235 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Matsu AI OS</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
 <style>
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-}
-
+*{margin:0;padding:0;box-sizing:border-box}
 body{
-font-family:'Inter',sans-serif;
+font-family:-apple-system,BlinkMacSystemFont,sans-serif;
 background:
-radial-gradient(circle at top left,#1b2a52 0%,transparent 30%),
-radial-gradient(circle at bottom right,#0e7490 0%,transparent 25%),
+radial-gradient(circle at top left,#1e3a8a33 0%,transparent 30%),
+radial-gradient(circle at bottom right,#06b6d433 0%,transparent 30%),
 #050816;
-color:white;
-height:100vh;
-overflow:hidden;
-display:flex;
+color:#fff;
+min-height:100vh;
+display:grid;
+grid-template-columns:280px 1fr;
 }
-
 .sidebar{
-width:300px;
 background:rgba(255,255,255,.05);
-backdrop-filter:blur(24px);
+backdrop-filter:blur(20px);
 border-right:1px solid rgba(255,255,255,.08);
-padding:28px;
-display:flex;
-flex-direction:column;
-gap:24px;
+padding:24px;
 }
-
 .logo{
-font-size:32px;
-font-weight:800;
-letter-spacing:-1px;
+font-size:30px;
+font-weight:900;
+margin-bottom:8px;
 }
-
-.subtitle{
+.sub{
+font-size:12px;
 opacity:.6;
-font-size:13px;
-margin-top:-14px;
+margin-bottom:28px;
 }
-
 .nav{
 display:flex;
 flex-direction:column;
 gap:10px;
 }
-
-.nav-item{
-padding:16px 18px;
-border-radius:18px;
-background:rgba(255,255,255,.03);
+.nav div{
+padding:14px 16px;
+border-radius:16px;
+background:rgba(255,255,255,.04);
 cursor:pointer;
-transition:.25s;
-font-weight:600;
+transition:.2s;
+font-weight:700;
 }
-
-.nav-item:hover{
-background:rgba(79,124,255,.18);
-transform:translateX(4px);
+.nav div:hover{
+background:rgba(91,124,250,.2);
+transform:translateX(3px);
 }
-
 .main{
-flex:1;
-padding:32px;
-overflow:auto;
+padding:28px;
 }
-
-.topbar{
+.top{
 display:flex;
-justify-content:space-between;
-align-items:center;
-margin-bottom:32px;
-gap:18px;
+gap:14px;
+margin-bottom:24px;
 }
-
 .search{
 flex:1;
-position:relative;
 }
-
 .search input{
 width:100%;
-padding:18px 22px;
+padding:16px;
 border:none;
-border-radius:22px;
-background:rgba(255,255,255,.06);
-backdrop-filter:blur(12px);
+border-radius:18px;
+background:rgba(255,255,255,.07);
 color:white;
-font-size:15px;
-outline:none;
 }
-
-.search input::placeholder{
-color:rgba(255,255,255,.4);
-}
-
-.add-btn{
-padding:16px 22px;
+button{
 border:none;
-border-radius:20px;
-background:linear-gradient(135deg,#4f7cff,#7c4dff);
+padding:16px 20px;
+border-radius:18px;
+background:linear-gradient(135deg,#5b7cfa,#7c3aed);
 color:white;
-font-weight:700;
+font-weight:800;
 cursor:pointer;
-font-size:15px;
-box-shadow:0 10px 30px rgba(79,124,255,.3);
-transition:.25s;
 }
-
-.add-btn:hover{
-transform:translateY(-2px) scale(1.02);
-}
-
 .stats{
 display:grid;
 grid-template-columns:repeat(3,1fr);
-gap:18px;
-margin-bottom:28px;
+gap:14px;
+margin-bottom:22px;
 }
-
 .stat{
-padding:24px;
-border-radius:24px;
+padding:20px;
+border-radius:22px;
 background:rgba(255,255,255,.05);
-backdrop-filter:blur(20px);
 border:1px solid rgba(255,255,255,.08);
 }
-
-.stat-title{
-opacity:.6;
-font-size:13px;
-margin-bottom:10px;
-}
-
-.stat-value{
+.stat b{
 font-size:34px;
-font-weight:800;
 }
-
 .grid{
 display:grid;
-grid-template-columns:repeat(auto-fill,minmax(340px,1fr));
-gap:22px;
+grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+gap:18px;
 }
-
 .card{
-padding:24px;
-border-radius:28px;
+padding:22px;
+border-radius:24px;
 background:rgba(255,255,255,.05);
 border:1px solid rgba(255,255,255,.08);
 backdrop-filter:blur(18px);
-transition:.3s;
-cursor:pointer;
-position:relative;
-overflow:hidden;
+transition:.25s;
 }
-
-.card:before{
-content:"";
-position:absolute;
-inset:0;
-background:linear-gradient(135deg,rgba(79,124,255,.12),transparent);
-opacity:0;
-transition:.3s;
-}
-
-.card:hover:before{
-opacity:1;
-}
-
 .card:hover{
-transform:translateY(-6px);
-border-color:rgba(79,124,255,.4);
-box-shadow:0 20px 40px rgba(0,0,0,.35);
+transform:translateY(-4px);
+border-color:#5b7cfa;
 }
-
-.card-top{
-display:flex;
-justify-content:space-between;
-align-items:center;
-margin-bottom:18px;
-}
-
 .badge{
-padding:7px 12px;
+display:inline-block;
+padding:6px 10px;
 border-radius:999px;
 font-size:12px;
 font-weight:800;
-}
-
-.high{
-background:#ff4d4f;
-}
-
-.mid{
-background:#faad14;
-}
-
-.low{
-background:#22c55e;
-}
-
-.card-title{
-font-size:22px;
-font-weight:700;
-line-height:1.4;
 margin-bottom:14px;
 }
-
-.card-summary{
-opacity:.72;
-line-height:1.8;
-font-size:14px;
-margin-bottom:18px;
+.high{background:#ef444433;color:#fecaca}
+.mid{background:#f59e0b33;color:#fde68a}
+.low{background:#22c55e33;color:#bbf7d0}
+.title{
+font-size:22px;
+font-weight:800;
+margin-bottom:10px;
+line-height:1.4;
 }
-
+.summary{
+opacity:.75;
+line-height:1.7;
+font-size:14px;
+margin-bottom:14px;
+}
 .tags{
 display:flex;
 flex-wrap:wrap;
-gap:10px;
+gap:8px;
 }
-
 .tag{
-padding:8px 12px;
+background:#1e3a8a55;
+padding:6px 10px;
 border-radius:999px;
-background:rgba(79,124,255,.14);
 font-size:12px;
 }
-
 .modal{
 display:none;
 position:fixed;
 inset:0;
-background:rgba(0,0,0,.65);
-backdrop-filter:blur(12px);
-justify-content:center;
+background:rgba(0,0,0,.7);
 align-items:center;
+justify-content:center;
 padding:20px;
-z-index:100;
 }
-
 .modal-content{
-width:min(760px,100%);
-padding:34px;
-border-radius:34px;
+width:min(700px,100%);
 background:#0f172a;
-border:1px solid rgba(255,255,255,.08);
+padding:28px;
+border-radius:28px;
 }
-
-.modal-content h2{
-font-size:30px;
-margin-bottom:24px;
-}
-
-input,textarea,select{
+.modal-content input,
+.modal-content textarea,
+.modal-content select{
 width:100%;
-padding:18px;
+padding:14px;
 border:none;
-border-radius:18px;
-background:rgba(255,255,255,.06);
+border-radius:14px;
+background:rgba(255,255,255,.07);
 color:white;
-margin-bottom:18px;
-font-size:15px;
-outline:none;
+margin-bottom:14px;
 }
-
-textarea{
-min-height:140px;
-resize:vertical;
+.modal-content textarea{
+min-height:120px;
 }
-
-.save-btn{
-width:100%;
-padding:18px;
-border:none;
-border-radius:20px;
-background:linear-gradient(135deg,#4f7cff,#7c4dff);
-color:white;
-font-size:16px;
-font-weight:700;
-cursor:pointer;
-}
-
 @media(max-width:900px){
-
-body{
-flex-direction:column;
-overflow:auto;
+body{grid-template-columns:1fr}
+.sidebar{border-right:none;border-bottom:1px solid rgba(255,255,255,.08)}
+.stats{grid-template-columns:1fr}
+.grid{grid-template-columns:1fr}
 }
-
-.sidebar{
-width:100%;
-border-right:none;
-border-bottom:1px solid rgba(255,255,255,.08);
-}
-
-.stats{
-grid-template-columns:1fr;
-}
-
-.grid{
-grid-template-columns:1fr;
-}
-
-}
-
 </style>
 </head>
-
 <body>
 
 <div class="sidebar">
-
-<div>
-<div class="logo">
-Matsu AI OS
-</div>
-
-<div class="subtitle">
-Personal Knowledge Intelligence System
-</div>
-</div>
+<div class="logo">Matsu AI OS</div>
+<div class="sub">Personal Knowledge Intelligence System</div>
 
 <div class="nav">
-<div class="nav-item">🏢 Real Estate</div>
-<div class="nav-item">🤖 AI Business</div>
-<div class="nav-item">📈 Investment</div>
-<div class="nav-item">🧠 Thinking</div>
-<div class="nav-item">🚗 Lifestyle</div>
+<div>🏢 Real Estate</div>
+<div>🤖 AI Business</div>
+<div>📈 Investment</div>
+<div>🧠 Thinking</div>
+<div>🚗 Lifestyle</div>
 </div>
-
 </div>
 
 <div class="main">
 
-<div class="topbar">
-
+<div class="top">
 <div class="search">
-<input id="searchInput" placeholder="Search thoughts, projects, knowledge...">
+<input id="search" placeholder="Search knowledge...">
 </div>
 
-<button class="add-btn" onclick="openModal()">
-＋ Add Knowledge
-</button>
-
+<button onclick="openModal()">＋ Add</button>
 </div>
 
 <div class="stats">
-
 <div class="stat">
-<div class="stat-title">Knowledge Nodes</div>
-<div class="stat-value" id="countStat">0</div>
+<div>Total Nodes</div>
+<b id="totalCount">0</b>
 </div>
 
 <div class="stat">
-<div class="stat-title">High Importance</div>
-<div class="stat-value" id="highStat">0</div>
+<div>High Importance</div>
+<b id="highCount">0</b>
 </div>
 
 <div class="stat">
-<div class="stat-title">Categories</div>
-<div class="stat-value">5</div>
+<div>Categories</div>
+<b>5</b>
 </div>
-
 </div>
 
 <div class="grid" id="grid"></div>
-
 </div>
 
 <div class="modal" id="modal">
-
 <div class="modal-content">
 
-<h2>Create Knowledge</h2>
+<h2 style="margin-bottom:18px">Add Knowledge</h2>
 
 <input id="title" placeholder="Title">
 
@@ -400,110 +245,115 @@ Personal Knowledge Intelligence System
 
 <textarea id="summary" placeholder="Summary"></textarea>
 
-<button class="save-btn" onclick="saveKnowledge()">
-Save Knowledge
-</button>
+<button onclick="saveKnowledge()">Save</button>
 
 </div>
-
 </div>
 
 <script>
 
-let knowledge = JSON.parse(localStorage.getItem("knowledge") || "[]")
-
-function updateStats(){
-
-document.getElementById("countStat").innerText=knowledge.length
-
-document.getElementById("highStat").innerText=
-knowledge.filter(k=>k.importance==="high").length
-
+const seed = [
+{
+title:"Knowledge OS構築",
+importance:"high",
+summary:"ChatGPT / Claude / NotebookLM を統合して知識DB化する構想。",
+tags:["AI","Knowledge","OS"],
+url:""
+},
+{
+title:"Synth X ブランド設計",
+importance:"high",
+summary:"新結合をテーマにしたAI会社名・ロゴ・カラー設計。",
+tags:["Synth X","Branding"],
+url:""
+},
+{
+title:"Omotesando Court",
+importance:"high",
+summary:"表参道案件のIRR、定借化、価値向上シナリオ。",
+tags:["Real Estate","IRR"],
+url:""
 }
+]
+
+let knowledge = JSON.parse(localStorage.getItem("knowledge")) || seed
 
 function render(data=knowledge){
 
 const grid=document.getElementById("grid")
-
 grid.innerHTML=""
+
+document.getElementById("totalCount").innerText=knowledge.length
+document.getElementById("highCount").innerText=
+knowledge.filter(x=>x.importance==="high").length
 
 data.forEach(item=>{
 
 grid.innerHTML += `
-
-<div class="card" onclick="window.open('${item.url}','_blank')">
-
-<div class="card-top">
+<div class="card" onclick="openLink('${item.url}')">
 
 <div class="badge ${item.importance}">
 ${item.importance}
 </div>
 
-</div>
-
-<div class="card-title">
+<div class="title">
 ${item.title}
 </div>
 
-<div class="card-summary">
+<div class="summary">
 ${item.summary}
 </div>
 
 <div class="tags">
-
 ${item.tags.map(tag=>`
 <div class="tag">${tag}</div>
 `).join("")}
-
 </div>
 
 </div>
-
 `
 
 })
 
 localStorage.setItem("knowledge",JSON.stringify(knowledge))
 
-updateStats()
+}
 
+function openLink(url){
+if(url){
+window.open(url,"_blank")
+}
 }
 
 function openModal(){
-
 document.getElementById("modal").style.display="flex"
-
 }
 
 function saveKnowledge(){
 
-const item={
-
+const item = {
 title:document.getElementById("title").value,
 importance:document.getElementById("importance").value,
+tags:document.getElementById("tags").value.split(","),
 url:document.getElementById("url").value,
-summary:document.getElementById("summary").value,
-tags:document.getElementById("tags").value.split(",")
-
+summary:document.getElementById("summary").value
 }
 
 knowledge.unshift(item)
 
-render()
-
 document.getElementById("modal").style.display="none"
+
+render()
 
 }
 
-document.getElementById("searchInput").addEventListener("input",(e)=>{
+document.getElementById("search").addEventListener("input",(e)=>{
 
 const q=e.target.value.toLowerCase()
 
 const filtered=knowledge.filter(item=>
-
 item.title.toLowerCase().includes(q) ||
 item.summary.toLowerCase().includes(q)
-
 )
 
 render(filtered)
